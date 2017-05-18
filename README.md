@@ -1,7 +1,5 @@
 # README #
 
-리드미가 요로코롬 되어있지요
-
 ### environment ###
  - python3
 
