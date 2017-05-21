@@ -1,0 +1,61 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+     <script src="{% static 'app/js/jquery-3.2.0.js' %}"></script>
+</head>
+<body>
+<script>
+    $(document).ready(function () {
+        $("input[name=chk_info]").change(function () {
+            var radioValue = $(this).val();
+            if(radioValue == "강사"){
+                $("#case_teacher").show();
+            }
+            else{
+                 $("#case_teacher").hide();
+            }
+        });
+    });
+</script>
+<div>
+    <form method="post">
+        {% csrf_token %}
+        <div>
+            <input type="radio" name="chk_info" value="일반" checked="checked">일반
+            <input type="radio" name="chk_info" value="강사">강사
+        </div>
+        <div>
+            <div>
+                <label for="id">아이디</label>
+                <input id="id" name="id" value="" type="text">
+            </div>
+            <div>
+                <label for="password">패스워드</label>
+                <input id="password" name="password" value="" type="password">
+            </div>
+            <div>
+                <label for="name">이름</label>
+                <input id="name" name="name" value="" type="text">
+            </div>
+            <div>
+                <label for="nickname">닉네임</label>
+                <input id="nickname" name="nickname" value="" type="text">
+            </div>
+        </div>
+        <div hidden id="case_teacher">
+            <div>
+                <label for="email">이메일</label>
+                <input id="email" name="email" value="" type="email">
+            </div>
+            <div>
+                <label for="phone_num">연락처</label>
+                <input id="phone_num" name="phone_num" value="" type="text">
+            </div>
+        </div>
+        <button>확인</button>
+    </form>
+</div>
+</body>
+</html>
