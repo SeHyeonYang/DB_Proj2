@@ -4,7 +4,7 @@ from django.shortcuts import render
 
 
 def welcome(request):
-    return render(request, 'app/class_list.html', {})
+    return render(request, 'app/course_list.html', {})
 
 
 def sign_in(request):
@@ -13,4 +13,5 @@ def sign_in(request):
 
 def sign_up(request):
     return render(request, 'app/sign_up.html', {})
+
 
