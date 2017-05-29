@@ -45,7 +45,6 @@ class Section(models.Model):
     due_date = models.DateField()
     max_capacity = models.IntegerField()
     min_capacity = models.IntegerField()
-    cur_apply_num = models.IntegerField()
 
 
 class TimeSlot(models.Model):
