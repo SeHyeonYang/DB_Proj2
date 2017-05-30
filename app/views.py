@@ -29,19 +29,27 @@ class SignUp(View):  # 회원가입
         context['category_list'] = category_list
         return render(request, 'app/sign_up.html', context)
 
-    @csrf_exempt
     def post(self, request):
-        # data = request.POST
-        # user_id = data['id']
-        # password = data['password']
-        # user_name = data['name']
-        # nickname = data['nickname']
+        data = request.POST
+        user_id = data['user-input-id']
+        password = data['password']
+        user_name = data['name']
+        nickname = data['nickname']
 
-        # user = User.objects.create(user_id=user_id, password=password, name=user_name, nickname=nickname)
-        # user.save()
+        user = User.objects.create(user_id=user_id, password=password, name=user_name, nickname=nickname)
 
         if request.POST.get("chk_info") == "강사":
-            print("강사")
+            phone_num = data['phone_num']
+            email_addr = data['email']
+            teacher = Teacher.objects.create(user_id=user, phone_num=phone_num, email_addr=email_addr)
+            category_list = Category.objects.all()
+            for category in category_list:
+                category_id = "category-" + str(category.id)
+                if category_id in data:
+                    cate = TeacherCategory.objects.create(teacher_id=teacher, category_id=category)
+                    cate.save()
+            teacher.save()
+        user.save()
         return HttpResponseRedirect('/app/sign_in/')
 
 
