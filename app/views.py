@@ -2,7 +2,9 @@ from django.shortcuts import render
 from django.views.generic import View
 from django.http import HttpResponseRedirect, HttpResponse
 from app.models import *
-from django.db import connection
+from django.views.decorators.csrf import csrf_exempt
+import json
+
 
 # Create your views here.
 
@@ -17,18 +19,29 @@ def sign_in(request):
 
 class SignUp(View):  # 회원가입
     def get(self, request):
-        return render(request, 'app/sign_up.html', {})
+        category_list = Category.objects.all()
 
+        for category in category_list:
+            temp_dict = dict()
+            temp_dict['category_id'] = category.id
+            temp_dict['category_name'] = category.category_name
+        context = {}
+        context['category_list'] = category_list
+        return render(request, 'app/sign_up.html', context)
+
+    @csrf_exempt
     def post(self, request):
-        data = request.POST
-        user_id = data['id']
-        password = data['password']
-        user_name = data['name']
-        nickname = data['nickname']
+        # data = request.POST
+        # user_id = data['id']
+        # password = data['password']
+        # user_name = data['name']
+        # nickname = data['nickname']
 
-        user = User.objects.create(user_id=user_id, password=password, name=user_name, nickname=nickname)
-        user.save()
+        # user = User.objects.create(user_id=user_id, password=password, name=user_name, nickname=nickname)
+        # user.save()
 
+        if request.POST.get("chk_info") == "강사":
+            print("강사")
         return HttpResponseRedirect('/app/sign_in/')
 
 
@@ -39,3 +52,10 @@ def dict_fetch_all(cursor):
         for row in cursor.fetchall()
     ]
 
+
+def id_check(request):
+    user_id = request.GET.get('data')[:-1]
+    check = User.objects.filter(user_id=user_id).count()
+    temp = dict()
+    temp['distinct_check'] = check
+    return HttpResponse(json.dumps(temp))
