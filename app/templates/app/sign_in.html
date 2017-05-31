@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="{% static 'app/css/sign-in.css' %}">
 </head>
 <body>
+{% if form.errors %}
+    <p>ID나 비밀번호가 일치하지 않습니다.</p>
+{% endif %}
 <div class="container">
     <form action="/app/sign_in/" method="post">
         {% csrf_token %}

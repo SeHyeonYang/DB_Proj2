@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.views.generic import View
 from django.http import HttpResponseRedirect, HttpResponse
 from app.models import *
-from django.views.decorators.csrf import csrf_exempt
 import json
 
 

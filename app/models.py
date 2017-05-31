@@ -23,8 +23,8 @@ class Category(models.Model):
 
 
 class TeacherCategory(models.Model):
-    teacher_id = models.ForeignKey(Teacher)
-    category_id = models.ForeignKey(Category)
+    teacher_id = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
 
 
 class Course(models.Model):
