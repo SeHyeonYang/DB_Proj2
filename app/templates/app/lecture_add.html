@@ -22,13 +22,12 @@
         }
     </style>
 {% endblock head %}
-
 {% block content %}
     <script>
         $(document).ready(function () {
-            $(".btn-circle").click(function () {
+            $(".btn-warning").click(function () {
                 var unselected = $(this).hasClass("unselected");
-                var type = $(this).attr("target");
+                //var type = $(this).attr("target");
                 var checkbox = $("#" + $(this).attr("check_target"));
                 $(checkbox).prop("checked", unselected);
                 if (unselected) {
@@ -49,7 +48,8 @@
                     <li style="margin-left: 10px"><a href="#">데이터를...</a></li>
                 </ul>
                 <ul class="nav nav-sidebar">
-                    <li role="separator" style="height: 1px; margin: 9px 0; overflow: hidden; background-color: #0f0f0f;"></li>
+                    <li role="separator"
+                        style="height: 1px; margin: 9px 0; overflow: hidden; background-color: #0f0f0f;"></li>
                 </ul>
                 <ul class="nav nav-sidebar">
                     <li style="font-weight: bold; margin-bottom: 10px;"><a href="#">- 전체 게시글</a></li>
@@ -65,27 +65,28 @@
                 <form class="form-horizontal" method="post" action="/app/lecture/add">
 
                     <div class="form-group">
-                        <label class="col-sm-3 control-label" for="lecture_name">카테고리</label>
-                        <div class="col-sm-3">
-                            <select name="category" id="lecture_select">
-                                <option value="">카테고리</option>
-                                <option value="">여기에</option>
-                                <option value="">카테고리</option>
-                                <option value="">데이터를</option>
-                                <option value="">넣어야합니다</option>
-                            </select>
+                        <label class="col-sm-3 control-label" for="phone_num">카테고리</label>
+                        <div class="col-sm-6">
+                            {% for category in category_list %}
+                                <input type="checkbox" id="category-{{ category.id }}" name="category-{{ category.id }}"
+                                       value="{{ category.category_name }}">{{ category.category_name }}
+                            {% endfor %}
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="lecture_name">강좌명</label>
-                        <div class="col-sm-6">
+                        <div class="col-sm-5">
                             <input class="form-control" id="lecture_name" name="lecture_name" value="" type="text">
                         </div>
+                        <button class="btn btn-warning" type="button" onclick='lecture_distinct_check("lecture_name")'>중복확인
+                        </button>
                     </div>
+
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="lecture_sum">수강금액</label>
                         <div class="col-sm-5">
-                            <input class="form-control" id="lecture_sum" name="lecture_sum" value="" type="number" style="text-align:right;">
+                            <input class="form-control" id="lecture_sum" name="lecture_sum" value="" type="number"
+                                   style="text-align:right;">
                         </div>
                         <div class="col-sm-1">
                             <span>원</span>
@@ -94,14 +95,16 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="name">최소 수강인원</label>
                         <div class="col-sm-1">
-                            <input class="form-control" id="name" name="name" value="" type="number">
+                            <input class="form-control" id="lecture_min_pnum" name="lecture_min_pnum" value=""
+                                   type="number">
                         </div>
                         <div class="col-sm-1">
                             <span>명</span>
                         </div>
                         <label class="col-sm-2 control-label" for="name">최대 수강인원</label>
                         <div class="col-sm-1">
-                            <input class="form-control" id="name" name="name" value="" type="number">
+                            <input class="form-control" id="lecture_max_pnum" name="lecture_max_pnum" value=""
+                                   type="number">
                         </div>
                         <div class="col-sm-1">
                             <span>명</span>
@@ -110,46 +113,34 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="name">장소</label>
                         <div class="col-sm-6">
-                            <input class="form-control" id="name" name="name" value="" type="text">
+                            <input class="form-control" id="lecture_place" name="lecture_place" value="" type="text">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="name">요일</label>
-                        <div class="col-sm-1">
-                            <button class="form-button btn btn-circle btn-danger" id="asset" name="asset" type="submit">
-                                월
-                            </button>
+                        <div class="center-block add-buttons-container">
+                            <p class="form-button btn btn-circle btn-warning unselected"
+                               check_target="monday_button">월</p>
+                            <p class="form-button btn btn-circle btn-warning unselected"
+                               check_target="tuesday_button">화</p>
+                            <p class="form-button btn btn-circle btn-warning unselected"
+                               check_target="wednesday_button">수</p>
+                            <p class="form-button btn btn-circle btn-warning unselected"
+                               check_target="thursday_button">목</p>
+                            <p class="form-button btn btn-circle btn-warning unselected"
+                               check_target="friday_button">금</p>
+                            <p class="form-button btn btn-circle btn-warning unselected"
+                               check_target="saturday_button">토</p>
+                            <p class="form-button btn btn-circle btn-warning unselected"
+                               check_target="sunday_button">일</p>
                         </div>
-                        <div class="col-sm-1">
-                            <button class="form-button btn btn-circle btn-danger" id="asset" name="asset" type="submit">
-                                화
-                            </button>
-                        </div>
-                        <div class="col-sm-1">
-                            <button class="form-button btn btn-circle btn-danger" id="asset" name="asset" type="submit">
-                                수
-                            </button>
-                        </div>
-                        <div class="col-sm-1">
-                            <button class="form-button btn btn-circle btn-danger" id="asset" name="asset" type="submit">
-                                목
-                            </button>
-                        </div>
-                        <div class="col-sm-1">
-                            <button class="form-button btn btn-circle btn-danger" id="asset" name="asset" type="submit">
-                                금
-                            </button>
-                        </div>
-                        <div class="col-sm-1">
-                            <button class="form-button btn btn-circle btn-danger" id="asset" name="asset" type="submit">
-                                토
-                            </button>
-                        </div>
-                        <div class="col-sm-1">
-                            <button class="form-button btn btn-circle btn-danger" id="asset" name="asset" type="submit">
-                                일
-                            </button>
-                        </div>
+                        <input hidden type="checkbox" name="monday_button" id="monday_button">
+                        <input hidden type="checkbox" name="tuesday_button" id="tuesday_button">
+                        <input hidden type="checkbox" name="wednesday_button" id="wednesday_button">
+                        <input hidden type="checkbox" name="thursday_button" id="thursday_button">
+                        <input hidden type="checkbox" name="friday_button" id="friday_button">
+                        <input hidden type="checkbox" name="saturday_button" id="saturday_button">
+                        <input hidden type="checkbox" name="sunday_button" id="sunday_button">
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="name">시간</label>
@@ -196,15 +187,19 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="name">강좌 설명</label>
                         <div class="col-sm-6">
-                            <textarea class="form-control" id="lecture_describe" name="lecture_describe" placeholder="간단한 설명을 입력하세요.(300자 제한)" type="text" maxlength="300" style="height:100px" wrap="soft"></textarea>
+                            <textarea class="form-control" id="lecture_describe" name="lecture_describe"
+                                      placeholder="간단한 설명을 입력하세요.(300자 제한)" type="text" maxlength="300"
+                                      style="height:100px" wrap="soft"></textarea>
                         </div>
                     </div>
                     <div class="form-group">
-                    <div class="col-sm-12 text-center">
-                        <button class="btn btn-primary" type="submit">등록하기<i class="fa fa-check spaceLeft"></i></button>
-                        <button class="btn btn-danger" type="button">취소<i class="fa fa-times spaceLeft"></i></button>
+                        <div class="col-sm-12 text-center">
+                            <button class="btn btn-primary" disabled="disabled" type="submit" id="lecture_sign_up_button">등록하기<i class="fa fa-check spaceLeft"></i>
+                            </button>
+                            <button class="btn btn-danger" type="button">취소<i class="fa fa-times spaceLeft"></i>
+                            </button>
+                        </div>
                     </div>
-                </div>
                 </form>
             </div>
         </div>
