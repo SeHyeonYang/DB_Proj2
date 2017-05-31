@@ -6,3 +6,6 @@ import json
 
 def group_home(request):
     return render(request, 'app/group_home.html', {})
+
+def group_creat(request):
+    return render(request, 'app/group_create.html',{})
