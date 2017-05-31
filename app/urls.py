@@ -9,5 +9,5 @@ urlpatterns = [
     url(r'^sign_up/$', views.SignUp.as_view(), name='sign_up'),
     url(r'^sign_up/$', views.SignUp.as_view(), name='group'),
     url(r'^id_check/$', views.id_check, name='id_check'),
-
+    url(r'^total_article/$', views.total_article, name='total_article'),
 ]

@@ -16,7 +16,6 @@ def welcome(request):
 def sign_in(request):
     return render(request, 'app/sign_in.html', {})
 
-
 class SignUp(View):  # 회원가입
     def get(self, request):
         category_list = Category.objects.all()

@@ -1,0 +1,53 @@
+{% extends 'app/menu_bar.html' %}
+{%  block content %}
+    <h4> 전체 게시판 목록 </h4>
+    <table class ="table table-striped">
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>작성일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ Article.article_id }}</td>
+            <td>{{ Article.title }}</td>
+            <td>{{ Article.user_id }}</td>
+            <td>{{ Article.date }}</td>
+        </tr>
+
+        </tbody>
+    </table>
+    <nav aria-label="...">
+        <ul class="pagination">
+            <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+            <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+            <li class="disabled"><a href="#">2 <span class="sr-only"></span></a></li>
+            <li class="disabled"><a href="#">3 <span class="sr-only"></span></a></li>
+            <li class="disabled"><a href="#">4 <span class="sr-only"></span></a></li>
+            <li class="disabled"><a href="#">5 <span class="sr-only"></span></a></li>
+            <li class="disabled"><a href="#" aria-label="Next"><span aria-hidden="true">&laquo;</span></a></li>
+        </ul>
+    </nav>
+
+    <div class="search">
+        <div class="col-lg-6">
+            <div class="input-group">
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">검색 옵션<span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">제목</a></li>
+                        <li><a href="#">작성자명</a></li>
+                    </ul>
+                    <input type="text" class="form-control" aria-label="...">
+                </div>
+
+            </div>
+            <button class="btn btn-primary" type="button">검색</button>
+
+        </div>
+    </div>
+
+{% endblock content %}
