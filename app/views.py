@@ -39,3 +39,6 @@ def dict_fetch_all(cursor):
         for row in cursor.fetchall()
     ]
 
+def lecture_add(request):
+    return render(request, 'app/lecture_add.html', {})
+
