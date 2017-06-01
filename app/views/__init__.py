@@ -1,5 +1,5 @@
 from .views import *
-from .sing_in_sign_up import *
+from .sign_in_up_out import *
 from .group import *
 
 from .total_article import *

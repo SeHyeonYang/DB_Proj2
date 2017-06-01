@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^lecture/add/$', views.LectureAdd.as_view(), name='lecture_add'),
     url(r'^lecture/all/$', views.lecture_all, name='lecture_all'),
     url(r'^sign_up/$', views.SignUp.as_view(), name='sign_up'),
+    url(r'^sign_out/$', views.sign_out, name='sign_out'),
     url(r'^group_home/$', views.group_home, name='group_home'),
     url(r'^id_check/$', views.id_check, name='id_check'),
     url(r'^total_article/$', views.total_article, name='total_article'),
