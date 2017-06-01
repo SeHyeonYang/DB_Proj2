@@ -25,15 +25,18 @@
 {% block content %}
     <script>
         $(document).ready(function () {
-            $(".btn-warning").click(function () {
+            $(".btn-circle").click(function () {
                 var unselected = $(this).hasClass("unselected");
                 //var type = $(this).attr("target");
+
                 var checkbox = $("#" + $(this).attr("check_target"));
                 $(checkbox).prop("checked", unselected);
                 if (unselected) {
                     $(this).removeClass("unselected");
+                    $(this).addClass("btn-warning");
                 } else {
                     $(this).addClass("unselected");
+                    $(this).removeClass("btn-warning");
                 }
             });
         });
@@ -78,7 +81,8 @@
                         <div class="col-sm-5">
                             <input class="form-control" id="lecture_name" name="lecture_name" value="" type="text">
                         </div>
-                        <button class="btn btn-warning" type="button" onclick='lecture_distinct_check("lecture_name")'>중복확인
+                        <button class="btn btn-warning" type="button" onclick='lecture_distinct_check("lecture_name")'>
+                            중복확인
                         </button>
                     </div>
 
@@ -119,19 +123,19 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="name">요일</label>
                         <div class="center-block add-buttons-container">
-                            <p class="form-button btn btn-circle btn-warning unselected"
+                            <p class="form-button btn btn-circle unselected"
                                check_target="monday_button">월</p>
-                            <p class="form-button btn btn-circle btn-warning unselected"
+                            <p class="form-button btn btn-circle unselected"
                                check_target="tuesday_button">화</p>
-                            <p class="form-button btn btn-circle btn-warning unselected"
+                            <p class="form-button btn btn-circle unselected"
                                check_target="wednesday_button">수</p>
-                            <p class="form-button btn btn-circle btn-warning unselected"
+                            <p class="form-button btn btn-circle unselected"
                                check_target="thursday_button">목</p>
-                            <p class="form-button btn btn-circle btn-warning unselected"
+                            <p class="form-button btn btn-circle unselected"
                                check_target="friday_button">금</p>
-                            <p class="form-button btn btn-circle btn-warning unselected"
+                            <p class="form-button btn btn-circle unselected"
                                check_target="saturday_button">토</p>
-                            <p class="form-button btn btn-circle btn-warning unselected"
+                            <p class="form-button btn btn-circle unselected"
                                check_target="sunday_button">일</p>
                         </div>
                         <input hidden type="checkbox" name="monday_button" id="monday_button">
@@ -194,7 +198,8 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-12 text-center">
-                            <button class="btn btn-primary" disabled="disabled" type="submit" id="lecture_sign_up_button">등록하기<i class="fa fa-check spaceLeft"></i>
+                            <button class="btn btn-primary" disabled="disabled" type="submit"
+                                    id="lecture_sign_up_button">등록하기<i class="fa fa-check spaceLeft"></i>
                             </button>
                             <button class="btn btn-danger" type="button">취소<i class="fa fa-times spaceLeft"></i>
                             </button>
