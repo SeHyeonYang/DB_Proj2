@@ -1,25 +1,42 @@
-from django.shortcuts import render
+from django.contrib.auth import logout, login
+from django.contrib.auth.decorators import user_passes_test
+from django.shortcuts import render, redirect
+from django.utils.decorators import method_decorator
 from django.views.generic import View
 from django.http import HttpResponseRedirect, HttpResponse
 from app.models import *
+from .authentify import *
 import json
 
 
-# Create your views here.
-
-
+#@user_passes_test(login_required, login_url='/app/sign_in/')
 def welcome(request):
     return render(request, 'app/course_list.html', {})
 
 
 def sign_in(request):
-    return render(request, 'app/sign_in.html', {})
+    if request.method == "GET":
+        return render(request, 'app/sign_in.html', {})
+    else:
+        data = request.POST
+        user = User.objects.filter(username=data['id'], password=data['password']).first()
+
+        if user is None:
+            return render(request, 'app/sign_in.html', {})
+        else:
+            login(request, user)
+            return HttpResponseRedirect('/app/welcome/')
+
+
+def sign_out(request):
+    logout(request)
+    return HttpResponseRedirect('/app/welcome/')
 
 
 class SignUp(View):  # 회원가입
+    # @method_decorator(user_passes_test(login_required, login_url='/app/sign_in/'))
     def get(self, request):
         category_list = Category.objects.all()
-
         for category in category_list:
             temp_dict = dict()
             temp_dict['category_id'] = category.id
@@ -35,7 +52,7 @@ class SignUp(View):  # 회원가입
         user_name = data['name']
         nickname = data['nickname']
 
-        user = User.objects.create(user_id=user_id, password=password, name=user_name, nickname=nickname)
+        user = User.objects.create(username=user_id, password=password, last_name=user_name, first_name=nickname)
 
         if request.POST.get("chk_info") == "강사":
             phone_num = data['phone_num']
@@ -62,7 +79,7 @@ def dict_fetch_all(cursor):
 
 def id_check(request):
     user_id = request.GET.get('data')[:-1]
-    check = User.objects.filter(user_id=user_id).count()
+    check = User.objects.filter(username=user_id).count()
     temp = dict()
     temp['distinct_check'] = check
     return HttpResponse(json.dumps(temp))

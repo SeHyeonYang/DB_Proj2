@@ -6,7 +6,7 @@
 
     <script src="{% static 'app/js/jquery-3.2.0.js' %}"></script>
     <script src="{% static 'app/js/bootstrap.js' %}"></script>
-    <script src="{%  static 'app/js/lecture.js' %}"></script>
+    <script src="{% static 'app/js/lecture.js' %}"></script>
 
     <link rel="stylesheet" href="{% static '/app/css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static '/app/css/bootstrap-theme.css' %}">
@@ -32,6 +32,15 @@
                 <li><a href="#">메뉴1</a></li>
                 <li><a href="#">메뉴2</a></li>
                 <li><a href="#">메뉴3</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+
+                {% if not user.is_authenticated %}
+                   <li id="sign-in"><a href="/app/sign_in/">Sign in</a></li>
+                {% else %}
+                    <li id="user-my-page"><a href="/app/my_page/info/">마이 페이지</a></li>
+                     <li id="sign-out"><a href="/app/sign_out/">Sign out</a></li>
+                {% endif %}
             </ul>
         </div>
     </div>

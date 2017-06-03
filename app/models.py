@@ -1,19 +1,22 @@
+from django.contrib.auth.models import User
 from django.db import models
+
 
 # Create your models here.
 
-
-class User(models.Model):
-    user_id = models.CharField(max_length=45, primary_key=True)
-    password = models.CharField(max_length=45)
-    name = models.CharField(max_length=45)
-    nickname = models.CharField(max_length=45)
-
+#
+#class User(models.Model):
+#    user_id = models.CharField(max_length=45, primary_key=True)
+#    password = models.CharField(max_length=45)
+#    name = models.CharField(max_length=45)
+#    nickname = models.CharField(max_length=45)
+#    last_login = models.DateTimeField(blank=True, null=True)
+#
 
 class Teacher(models.Model):
     # teacher_id is auto serial key. 1,2,3,4,...
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    phone_num = models.IntegerField()
+    phone_num = models.CharField(max_length=45)
     email_addr = models.EmailField()
 
 
@@ -36,7 +39,7 @@ class Course(models.Model):
 
 class Section(models.Model):
     # section_id is auto serial key. 1,2,3,4,...
-    course_id = models.ForeignKey(Course)   # not cascade
+    course_id = models.ForeignKey(Course)  # not cascade
     start_date = models.DateField()
     end_date = models.DateField()
     times = models.IntegerField()
@@ -49,7 +52,7 @@ class Section(models.Model):
 
 class TimeSlot(models.Model):
     # time_slot_id is auto serial key. 1,2,3,4,...
-    day = models.IntegerField()     # mon~sun : 1~7
+    day = models.IntegerField()  # mon~sun : 1~7
     start_time = models.TimeField()
     end_time = models.TimeField()
 
@@ -91,5 +94,3 @@ class Article(models.Model):
     contents = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
     notice = models.BooleanField(default=False)
-
-
