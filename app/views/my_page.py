@@ -1,11 +1,13 @@
 from django.shortcuts import render
+from .authentify import *
 
 
 def my_page(request, menu):
+    user = request.user
+    context = dict()
+    context['my_info'] = user
+    context['is_teacher'] = is_teacher(user)
     if menu == "info":
-        user = request.user
-        context = dict()
-        context['my_info'] = user
         return render(request, 'app/my_page_info.html', context)
     elif menu == "friend":
         return render(request, 'app/my_page_friend.html', {})
