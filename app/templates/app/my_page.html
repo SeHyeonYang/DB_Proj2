@@ -27,6 +27,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
+            {% if is_teacher %}
             <ul class="nav nav-sidebar">
                 <li style="font-weight: bold; margin-bottom: 10px;"><a href="#">- 내 강좌 -</a></li>
                 <li style="margin-left: 10px"><a href="#">진행중 강좌</a></li>
@@ -38,6 +39,7 @@
                 <li role="separator"
                     style="height: 1px; margin: 9px 0; overflow: hidden; background-color: #0f0f0f;"></li>
             </ul>
+            {% endif %}
             <ul class="nav nav-sidebar">
                 <li style="font-weight: bold; margin-bottom: 10px;"><a href="#">- 마이 메뉴 -</a></li>
                 <li style="margin-left: 10px"><a href="/app/my_page/info/">내 정보</a></li>

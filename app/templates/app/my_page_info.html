@@ -1,6 +1,8 @@
 {% extends 'app/my_page.html' %}
 {% block my_page %}
-    <h1>마이 페이지 - 내 정보</h1>
+    <div class="page-header">
+        <h1>마이 페이지 - 내 정보</h1>
+    </div>
     <p>{{ user.first_name }}</p>
     <p>{{ user.last_name }}</p>
-{% endblock my_page%}
+{% endblock my_page %}
