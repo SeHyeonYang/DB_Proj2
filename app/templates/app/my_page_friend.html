@@ -12,14 +12,14 @@
     <div class="page-header">
         <h2>친구 찾기</h2>
     </div>
-      <form class="form-horizontal" method="post">
+      <form class="form-horizontal">
        {% csrf_token %}
         <div class="form-group">
             <label class="col-sm-3 control-label" for="search-friend">전체 찾기</label>
             <div class="col-sm-5">
                 <input class="form-control" id="search-friend-by-all" name="id" value="" type="text">
             </div>
-            <button id="search-button" class="btn btn-success" type="submit">찾기</button>
+            <button id="search-button" class="btn btn-success" type="button" onclick="search_friend('search','search-friend-by-all')">찾기</button>
         </div>
     </form>
     <form class="form-horizontal" method="post">

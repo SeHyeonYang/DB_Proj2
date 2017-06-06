@@ -80,6 +80,7 @@ class Group(models.Model):
     leader = models.ForeignKey(User)
     date = models.DateField(auto_now_add=True)  # group 생성시의 date
     comments = models.TextField()
+    category = models.ForeignKey(Category)
 
 
 class UserGroup(models.Model):

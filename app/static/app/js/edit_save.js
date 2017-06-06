@@ -68,15 +68,15 @@ function get_cookie(name) {
     return cookieValue;
 }
 
-function search_friend(option, data){
+function search_friend(option, data) {
     $.ajaxSetup({
         headers: {"X-CSRFToken": get_cookie("csrftoken")}
     });
 
-    friends = []
+    var data_source = document.getElementById(data);
 
     $.ajax({
-        url: '/app/my_info/search/?data=' + data + '/',
+        url: '/app/my_page/friend/?action=search&option=' + option + '&data=' + data_source.data + '/',
         type: 'POST',
         data: friends,
         success: function (result) {
