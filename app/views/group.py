@@ -9,3 +9,6 @@ def group_home(request):
 
 def group_creat(request):
     return render(request, 'app/group_create.html',{})
+
+def group_private(request):
+    return render(request, 'app/group_private.html',{})
