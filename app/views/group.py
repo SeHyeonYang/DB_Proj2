@@ -8,7 +8,16 @@ def group_home(request):
     return render(request, 'app/group_home.html', {})
 
 def group_creat(request):
-    return render(request, 'app/group_create.html',{})
+    category_list = Category.objects.all()
+
+    for category in category_list:
+        temp_dict = dict()
+        temp_dict['category_id'] = category.id
+        temp_dict['category_name'] = category.category_name
+    context = {}
+    context['category_list'] = category_list
+    return render(request, 'app/group_create.html', context)
+
 
 def group_private(request):
     return render(request, 'app/group_private.html',{})
