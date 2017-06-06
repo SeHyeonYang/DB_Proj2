@@ -14,5 +14,4 @@ urlpatterns = [
     url(r'^id_check/$', views.id_check, name='id_check'),
     url(r'^total_article/$', views.total_article, name='total_article'),
     url(r'^my_page/(?P<menu>[\w]+)/$', views.my_page, name='my_page'),
-
 ]
