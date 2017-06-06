@@ -13,6 +13,12 @@ def my_page(request, menu):
     if menu == "info":
         return render(request, 'app/my_page_info.html', context)
     elif menu == "friend":
+        option = request.GET.get('option')
+        data = request.GET.get('data')
+        if data is not None :
+            temp_string = str(option)+"/"+str(data)
+            print(temp_string)
+
         friends = Friend.objects.filter(sender_id=user)
         friend_list = []
         for friend in friends:
