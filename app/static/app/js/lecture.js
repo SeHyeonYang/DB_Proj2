@@ -11,7 +11,7 @@ function lecture_distinct_check(_lecture_input_id) {
     });
 
     $.ajax({
-        url: '/app/id_check/?data=' + lecture_id + '/',
+        url: '/app/lecture_check/?data=' + lecture_id + '/',
         type: 'POST',
         success: function (result) {
             var dict = JSON.parse(result);
@@ -29,4 +29,20 @@ function lecture_distinct_check(_lecture_input_id) {
         }
     });
 
+}
+
+function get_cookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
 }
