@@ -4,33 +4,41 @@
         <h1>그룹 생성</h1>
     </div>
     <form class="form-horizontal" method="post" action="/app/group_create/">
+<<<<<<< HEAD
+        {% csrf_token %}
+=======
       {% csrf_token %}
+>>>>>>> 31f1b7d556a0f44de756f66a94ef3375c7a500b5
         <div class="form-group">
             <label for="group_name" class="col-sm-2 control-label">그룹 명</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" name="group_name" id="group_name" placeholder="그룹 명을 입력해 주세요." >
             </div>
         </div>
-             <div class="form-group">
+                <div class="form-group">
                     <label class="col-sm-2 control-label" for="phone_num">카테고리</label>
                     <div class="col-sm-10">
-                            {% for category in category_list %}
-                                <input type="checkbox" id="category-{{category.id}}" name="category-{{category.id}}" value="{{category.category_name}}">{{category.category_name}}
-                            {% endfor %}
+                        {% for category in category_list %}
+                            <input type="checkbox" id="category-{{category.id}}" name="category" value="{{category.category_name}}">{{category.category_name}}
+                        {% endfor %}
+                        <script> <!-- chcked only one item-->
+                        $('input[type="checkbox"]').on('change', function() {
+                            $(this).siblings('input[type="checkbox"]').prop('checked', false);
+                        });
+                        </script>
                     </div>
-             <script type = "text/javascript" src ="group_home.js"></script>
                 </div>
-        <div class="form-group" >
-            <label for="group_comment" class="col-sm-2 control-label">그룹 소개</label>
-            <div class="col-sm-10">
-                <input  style="height: 100px"type="text" class="form-control" id="group_comment" placeholder="그룹을 소개를 입력해 주세요.">
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default">생성하기</button>
-            </div>
-        </div>
+                <div class="form-group" >
+                    <label for="group_comment" class="col-sm-2 control-label">그룹 소개</label>
+                    <div class="col-sm-10">
+                        <input  style="height: 100px"type="text" class="form-control" id="group_comment" name ="group_comment" placeholder="그룹을 소개를 입력해 주세요.">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-default">생성하기</button>
+                    </div>
+                </div>
     </form>
 
 {% endblock my_page %}
