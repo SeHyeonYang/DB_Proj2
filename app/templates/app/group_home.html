@@ -1,37 +1,33 @@
 {% extends 'app/my_page.html' %}
-<link type = "group/css" hrep ="group.css" rel="stylesheet">
+<link type="group/css" hrep="group.css" rel="stylesheet">
 
 {% block my_page %}
 
     <div class="container">
         <h2 class="page-header">내 그룹</h2>
-        <div class="table-responsive" id ="right">
+        <div class="table-responsive" id="right">
             <table class="table table-striped">
-
                 <thead>
-
                 <tr>
                     <th>번호</th>
                     <th>그룹명</th>
                     <th>최신 글</th>
-
                 </tr>
                 </thead>
-
             </table>
         </div>
     </div>
     </div>
-
-    <div class ="container">
+    <div class="container">
         <h2 class="page-header">전체 그룹</h2>
-
-        <div class ="table-responsive">
-            <div class="row" >
+        <div class="table-responsive">
+            <div class="row">
                 <div class="col-lg-6">
                     <div class="input-group">
                         <div class="input-group-btn" ng-controller="DropdownCtrl" dropdown is-open="status.isopen">
-                            <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle data-toggle="dropdown" aria-expanded="false" ng-disabled="disabled" id ="button">검색 <span class="caret"></span></button>
+                            <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle
+                                    data-toggle="dropdown" aria-expanded="false" ng-disabled="disabled" id="button">검색
+                                <span class="caret"></span></button>
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="#">전체</a></li>
                                 <li><a href="#">그룹 이름</a></li>
@@ -39,12 +35,12 @@
                                 <li><a href="#">카테고리</a></li>
                             </ul>
                         </div><!-- /btn-group -->
-                        <input type="text" class="form-control" placeholder="검색어를 입력해 주세요" aria-describedby="basic-addon2" >
+                        <input type="text" class="form-control" placeholder="검색어를 입력해 주세요"
+                               aria-describedby="basic-addon2">
                         <span class="input-group-addon" id="basic-addon2">검색</span>
                     </div><!-- /input-group -->
                 </div><!-- /.col-lg-6 -->
             </div>
-
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
@@ -57,22 +53,27 @@
                     </thead>
                     <tdody>
                         </tr>
-                        <form class="form-horizontal" method="post" action="/app/group_home/">
-                            {% for group in group_list %}
+
+                        {% for group in group_list %}
+                            <form class="form-horizontal" method="post" action="/app/group_home/">
                                 {% csrf_token %}
                                 <tr>
-                                    <td id="group-{{group.id}}" name="group_id-{{group.id}}" value="{{group.id}}">{{group.id}}</td>
-                                    <td id="group-{{group.group_name}}" name="group_name" value="{{group.group_name}}">{{group.group_name}}</td>
-                                    <input id="group_hidden" name ="group_id" value= "{{group.id}}" type="hidden">
-                                    <td id="group-{{group.leader}}" name="group_leader" value="{{group.leader}}">{{group.leader}}</td>
-                                    <td id="group-{{group.category}}" name="category" value="{{group.category}}">{{group.catergory}}</td>
+                                    <td id="group-{{ group.id }}" name="group_id-{{ group.id }}"
+                                        value="{{ group.id }}">{{ group.id }}</td>
+                                    <td id="group-{{ group.group_name }}" name="group_name"
+                                        value="{{ group.group_name }}">{{ group.group_name }}</td>
+                                    <input id="group_hidden_id" name="group_hidden_id" value="{{ group.id }}"
+                                           type="hidden">
+                                    <td id="group-{{ group.leader }}" name="group_leader"
+                                        value="{{ group.leader }}">{{ group.leader }}</td>
+                                    <td id="group-{{ group.category }}" name="category"
+                                        value="{{ group.category }}">{{ group.catergory }}</td>
                                     <td>
-                                        <input type=submit value="가입하기" onclick ="this.disabled = true">
+                                        <a onclick='join_group("{{ group.id }}")'>가입하기</a>
                                     </td>
                                 </tr>
-
-                            {% endfor %}
-                        </form>
+                            </form>
+                        {% endfor %}
                     </tdody>
 
 
@@ -82,8 +83,8 @@
         </div>
     </div>
 
-    <div class = "text-center">
-        <a href ="/app/group_create" button type="button" class="btn btn-default"> 그룹 개설</a>
+    <div class="text-center">
+        <a href="/app/group_create" button type="button" class="btn btn-default"> 그룹 개설</a>
     </div>
 
 {% endblock my_page %}

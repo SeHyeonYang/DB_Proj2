@@ -50,7 +50,10 @@
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 {% for a in data %}
                     <div class="page-header">
-                        <h1>강좌명 : {{ a.lecture_name }}</h1>
+                        <h1 id="lecture_name">강좌명 : {{ a.lecture_name }}</h1>
+                    </div>
+                    <div class="col-sm-12 text-right">
+                        <a href="/app/lecture/{{ a.lecture_name }}/section/add/" class="btn btn-primary">분기강좌 개설</a>
                     </div>
                     <table class="table table-striped">
                         <thead>
@@ -66,14 +69,7 @@
                         </tr>
                         </tbody>
                     </table>
-                    <form action="/app/lecture/detail/?data={{ a.lecture_name }}" method="post">
-                    {% csrf_token %}
-                    <div class="col-sm-12 text-center">
-                        <button class="btn btn-primary" type="submit"
-                                id="lecture_sign_up_button">분기강좌 개설
-                        </button>
-                    </div>
-                </form>
+
                 {% endfor %}
 
 
