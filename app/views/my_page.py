@@ -44,13 +44,29 @@ def my_page(request, menu):
                 new_relationship = Friend.objects.create(sender_id=user, receiver_id=friend)
                 new_relationship.save()
 
-        friends = Friend.objects.filter(Q(sender_id=user) | Q(receiver_id=user))
-        friend_list = []
-        for friend in friends:
+        together_friends = Friend.objects.filter(Q(sender_id=user) & Q(approve=True))
+        together_friend_list = []
+        for friend in together_friends:
             temp_dict = dict()
             temp_dict['friend_id'] = friend.receiver_id
-            friend_list.append(temp_dict)
-        context['friends'] = friend_list
+            together_friend_list.append(temp_dict)
+        context['together_friend'] = together_friend_list
+
+        only_me_friends = Friend.objects.filter(sender_id=user)
+        only_me_friend_list = []
+        for friend in only_me_friends:
+            temp_dict = dict()
+            temp_dict['friend_id'] = friend.receiver_id
+            only_me_friend_list.append(temp_dict)
+        context['only_me_friend'] = only_me_friend_list
+
+        only_you_friends = Friend.objects.filter(receiver_id=user)
+        only_you_friend_list = []
+        for friend in only_you_friends:
+            temp_dict = dict()
+            temp_dict['friend_id'] = friend.sender_id
+            only_you_friend_list.append(temp_dict)
+        context['only_you_friend'] = only_you_friend_list
         return render(request, 'app/my_page_friend.html', context)
     elif menu == "lecture":
         return render(request, 'app/my_page_lecture.html', {})

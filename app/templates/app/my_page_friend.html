@@ -3,12 +3,32 @@
     <div class="page-header">
         <h1>마이 페이지 - 친구</h1>
     </div>
-    {% if friends %}
-        {% for friend in friends %}
-            <p>{{ friend.friend_id }}</p>
-        {% endfor %}
-    {% endif %}
-
+    <div class="container">
+        {% if only_me_friend %}
+            <div class="page-header">
+                <h3>내가 등록한 친구</h3>
+            </div>
+            {% for friend in only_me_friend %}
+                <p>{{ friend.friend_id }}</p>
+            {% endfor %}
+        {% endif %}
+        {% if only_you_friend %}
+            <div class="page-header">
+                <h3>나를 등록한 친구</h3>
+            </div>
+            {% for friend in only_you_friend %}
+                <p>{{ friend.friend_id }}</p>
+            {% endfor %}
+        {% endif %}
+        {% if together_friend %}
+            <div class="page-header">
+                <h3>서로 등록한 친구</h3>
+            </div>
+            {% for friend in together_friend %}
+                <p>{{ friend.friend_id }}</p>
+            {% endfor %}
+        {% endif %}
+    </div>
     <div class="page-header">
         <h2>친구 찾기</h2>
     </div>
@@ -101,7 +121,8 @@
                             <td>{{ friend.friend_search_id }}</td>
                             <td>{{ friend.friend_search_name }}</td>
                             <td>{{ friend.friend_search_nickname }}</td>
-                            <td><a id="make-friend-relation-{{ friend.friend_search_id }}" onclick='make_friend_relationship("{{ friend.friend_search_id }}")'>신청하기</a></td>
+                            <td><a id="make-friend-relation-{{ friend.friend_search_id }}"
+                                   onclick='make_friend_relationship("{{ friend.friend_search_id }}")'>신청하기</a></td>
                         </tr>
                     {% endfor %}
                     </tbody>
