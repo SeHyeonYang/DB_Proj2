@@ -9,5 +9,5 @@ def login_required(user):
 
 def is_teacher(user):
     if Teacher.objects.filter(user_id=user.id).count() == 1:
-        return True
+        return Teacher.objects.filter(user_id=user.id).first()
     return False

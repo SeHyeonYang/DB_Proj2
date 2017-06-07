@@ -1,9 +1,12 @@
 {% extends 'app/my_page.html' %}
 {% block my_page %}
     <div class="page-header">
-        <h1>마이 페이지 - 내 정보</h1>
+        <h1>마이 페이지</h1>
     </div>
-    <div>
+    <div class="container">
+        <div class="page-header">
+            <h3>내 정보</h3>
+        </div>
         <div>
             <p class="col-sm-1">이름 : </p>
             <p id="my-page-user-name">{{ user.last_name }}</p>
@@ -16,5 +19,20 @@
             <a class="col-sm-3" id="edit-button-my-info" style="cursor: hand" onclick='edit_button("my-info")'>수정하기</a>
             <a class="col-sm-3" hidden style="cursor: hand" id="save-button-my-info" onclick='save_button("my-info")'>저장하기</a>
         </div>
+    </div>
+    <div class="container">
+        {% if is_teacher %}
+            <div class="page-header">
+                <h3>강사 정보</h3>
+            </div>
+            <p>{{ is_teacher.phone_num }} </p>
+            <p>{{ is_teacher.email_addr }} </p>
+            <div>
+                <a id="edit-button-teacher-info" style="cursor: hand">수정하기</a>
+                <a hidden style="cursor: hand" id="save-button-teacher-info"
+                   onclick='save_button("teacher-info")'>저장하기</a>
+            </div>
+            </div>
+        {% endif %}
     </div>
 {% endblock my_page %}
