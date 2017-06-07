@@ -47,3 +47,7 @@ function get_cookie(name) {
     }
     return cookieValue;
 }
+
+function lecture_detail(title) {
+    location.href = "/app/lecture/detail/?data" + title;
+}
