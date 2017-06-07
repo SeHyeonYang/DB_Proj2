@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-
+from django.db.models import Q
 from .authentify import *
 from django.http import HttpResponseRedirect, HttpResponse
 
@@ -13,27 +13,60 @@ def my_page(request, menu):
     if menu == "info":
         return render(request, 'app/my_page_info.html', context)
     elif menu == "friend":
-        option = request.GET.get('option')
-        data = request.GET.get('data')
-        if data is not None :
-            temp_string = str(option)+"/"+str(data)
-            print(temp_string)
+        if request.method == "POST":
+            action = request.GET.get('action')
+            if action == "search":
+                option = request.GET.get('option')[:-1]
+                if option == "findbyall":
+                    data = request.POST.get("search-friend-by-all")
+                    friend_search_list = User.objects.filter(Q(username=data) | Q(first_name=data) | Q(last_name=data))
+                    search_list = []
+                    for a in friend_search_list:
+                        temp_dict = dict()
+                        temp_dict['friend_search_id'] = a.username
+                        temp_dict['friend_search_name'] = a.last_name
+                        temp_dict['friend_search_nickname'] = a.first_name
+                        search_list.append(temp_dict)
+                    context['friend_search_list'] = search_list
+                    maybe_friend_search_list = User.objects.filter(
+                        Q(username__contains=data) | Q(first_name__contains=data) | Q(last_name__contains=data))
+                    search_list_sub = []
+                    for a in maybe_friend_search_list:
+                        temp_dict = dict()
+                        temp_dict['friend_search_id'] = a.username
+                        temp_dict['friend_search_name'] = a.last_name
+                        temp_dict['friend_search_nickname'] = a.first_name
+                        search_list_sub.append(temp_dict)
+                    context['friend_search_list_sub'] = search_list_sub
+            elif action == "befriend":
+                friend_id= request.GET.get('data')[:-1]
+                friend = User.objects.filter(username=friend_id).first()
+                new_relationship = Friend.objects.create(sender_id=user, receiver_id=friend)
+                new_relationship.save()
 
-        friends = Friend.objects.filter(sender_id=user)
-        friend_list = []
-        for friend in friends:
+        together_friends = Friend.objects.filter(Q(sender_id=user) & Q(approve=True))
+        together_friend_list = []
+        for friend in together_friends:
             temp_dict = dict()
             temp_dict['friend_id'] = friend.receiver_id
-            friend_list.append(temp_dict)
+            together_friend_list.append(temp_dict)
+        context['together_friend'] = together_friend_list
 
-        temp_dict = dict()
-        temp_dict['friend_id'] = "test"
-        friend_list.append(temp_dict)
-        temp_dict = dict()
-        temp_dict['friend_id'] = "test2"
-        friend_list.append(temp_dict)
+        only_me_friends = Friend.objects.filter(sender_id=user)
+        only_me_friend_list = []
+        for friend in only_me_friends:
+            temp_dict = dict()
+            temp_dict['friend_id'] = friend.receiver_id
+            only_me_friend_list.append(temp_dict)
+        context['only_me_friend'] = only_me_friend_list
 
-        context['friends'] = friend_list
+        only_you_friends = Friend.objects.filter(receiver_id=user)
+        only_you_friend_list = []
+        for friend in only_you_friends:
+            temp_dict = dict()
+            temp_dict['friend_id'] = friend.sender_id
+            only_you_friend_list.append(temp_dict)
+        context['only_you_friend'] = only_you_friend_list
         return render(request, 'app/my_page_friend.html', context)
     elif menu == "lecture":
         return render(request, 'app/my_page_lecture.html', {})
@@ -65,6 +98,6 @@ def my_page_option(request, option):
         user.first_name = nickname
         user.last_name = user_name
 
-        #user.save()
+        # user.save()
 
     return HttpResponse("OK")
