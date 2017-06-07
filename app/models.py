@@ -53,8 +53,8 @@ class Section(models.Model):
     due_date = models.DateField()
     max_capacity = models.IntegerField()
     min_capacity = models.IntegerField()
-    start_time = models.TimeField(default=default_time())
-    end_time = models.TimeField(default=default_time())
+    start_time = models.IntegerField()
+    end_time = models.IntegerField()
 
 
 class TimeSlot(models.Model):
