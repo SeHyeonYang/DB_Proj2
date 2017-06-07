@@ -6,15 +6,24 @@
     <div class="container">
         <h2 class="page-header">내 그룹</h2>
         <div class="table-responsive" id="right">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>번호</th>
-                    <th>그룹명</th>
-                    <th>최신 글</th>
-                </tr>
-                </thead>
-            </table>
+             <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>번호</th>
+                        <th>그룹명</th>
+                        <th>최신글</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for group in my_group_list %}
+                        <tr>
+                            <td>{{ group.group_id }}</td>
+                            <td>{{ group.group_name }}</td>
+                            <td>최신글이 없습니다.</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
         </div>
     </div>
     </div>
@@ -58,18 +67,18 @@
                             <form class="form-horizontal" method="post" action="/app/group_home/">
                                 {% csrf_token %}
                                 <tr>
-                                    <td id="group-{{ group.id }}" name="group_id-{{ group.id }}"
-                                        value="{{ group.id }}">{{ group.id }}</td>
+                                    <td id="group-{{ group.group_id }}" name="group_id-{{ group.group_id }}"
+                                        value="{{ group.group_id }}">{{ group.group_id }}</td>
                                     <td id="group-{{ group.group_name }}" name="group_name"
                                         value="{{ group.group_name }}">{{ group.group_name }}</td>
-                                    <input id="group_hidden_id" name="group_hidden_id" value="{{ group.id }}"
+                                    <input id="group_hidden_id" name="group_hidden_id" value="{{ group.group_id }}"
                                            type="hidden">
                                     <td id="group-{{ group.leader }}" name="group_leader"
                                         value="{{ group.leader }}">{{ group.leader }}</td>
                                     <td id="group-{{ group.category }}" name="category"
                                         value="{{ group.category }}">{{ group.catergory }}</td>
                                     <td>
-                                        <a onclick='join_group("{{ group.id }}")'>가입하기</a>
+                                        <a onclick='join_group("{{ group.group_id }}")'>가입하기</a>
                                     </td>
                                 </tr>
                             </form>
