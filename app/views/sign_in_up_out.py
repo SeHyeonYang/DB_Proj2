@@ -49,11 +49,11 @@ class SignUp(View):  # 회원가입
         data = request.POST
         user_id = data['user-input-id']
         password = data['password']
-        user_name = data['name']
-        nickname = data['nickname']
+        last_name = data['name']
+        first_name = data['nickname']
 
-        _user = User.objects.create(username=user_id, password=password, first_name=nickname, last_name= user_name)
-        app_user = AppUser.objects.create(user=_user, name=user_name, nickname=nickname)
+        _user = User.objects.create(username=user_id, password=password, first_name=first_name, last_name= last_name)
+        #app_user = AppUser.objects.create(user=_user, name=user_name, nickname=nickname)
 
         if request.POST.get("chk_info") == "강사":
             phone_num = data['phone_num']
