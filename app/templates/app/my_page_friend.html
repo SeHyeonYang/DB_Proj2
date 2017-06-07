@@ -45,7 +45,7 @@
     <form class="form-horizontal" method="post">
         {% csrf_token %}
         <div class="form-group">
-            <label class="col-sm-3 control-label" for="search-friend">ID로 찾기</label>
+            <label class="col-sm-3 control-label" for="search-friend">ID(username)로 찾기</label>
             <div class="col-sm-5">
                 <input class="form-control" id="search-friend-by-id" name="id" value="" type="text">
             </div>
@@ -55,7 +55,7 @@
     <form class="form-horizontal" method="post">
         {% csrf_token %}
         <div class="form-group">
-            <label class="col-sm-3 control-label" for="search-friend">이름으로 찾기</label>
+            <label class="col-sm-3 control-label" for="search-friend">last name 으로 찾기</label>
             <div class="col-sm-5">
                 <input class="form-control" id="search-friend-by-name" name="id" value="" type="text">
             </div>
@@ -65,7 +65,7 @@
     <form class="form-horizontal" method="post">
         {% csrf_token %}
         <div class="form-group">
-            <label class="col-sm-3 control-label" for="search-friend">닉네임으로 찾기</label>
+            <label class="col-sm-3 control-label" for="search-friend">first name 으로 찾기</label>
             <div class="col-sm-5">
                 <input class="form-control" id="search-friend-by-nickname" name="id" value="" type="text">
             </div>
@@ -85,8 +85,8 @@
                     <thead>
                     <tr>
                         <th>아이디</th>
-                        <th>이름</th>
-                        <th>닉네임</th>
+                        <th>last name</th>
+                        <th>first name</th>
                         <th>신청하기</th>
                     </tr>
                     </thead>
@@ -110,8 +110,8 @@
                     <thead>
                     <tr>
                         <th>아이디</th>
-                        <th>이름</th>
-                        <th>닉네임</th>
+                        <th>last name</th>
+                        <th>first name</th>
                         <th>신청하기</th>
                     </tr>
                     </thead>

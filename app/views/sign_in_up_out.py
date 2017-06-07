@@ -49,15 +49,16 @@ class SignUp(View):  # 회원가입
         data = request.POST
         user_id = data['user-input-id']
         password = data['password']
-        user_name = data['name']
-        nickname = data['nickname']
+        last_name = data['name']
+        first_name = data['nickname']
 
-        user = User.objects.create(username=user_id, password=password, last_name=user_name, first_name=nickname)
+        _user = User.objects.create(username=user_id, password=password, first_name=first_name, last_name= last_name)
+        #app_user = AppUser.objects.create(user=_user, name=user_name, nickname=nickname)
 
         if request.POST.get("chk_info") == "강사":
             phone_num = data['phone_num']
             email_addr = data['email']
-            teacher = Teacher.objects.create(user_id=user, phone_num=phone_num, email_addr=email_addr)
+            teacher = Teacher.objects.create(user_id=_user, phone_num=phone_num, email_addr=email_addr)
             category_list = Category.objects.all()
             for category in category_list:
                 category_id = "category-" + str(category.id)
@@ -65,7 +66,8 @@ class SignUp(View):  # 회원가입
                     cate = TeacherCategory.objects.create(teacher_id=teacher, category_id=category)
                     cate.save()
             teacher.save()
-        user.save()
+        _user.save()
+        app_user.save()
         return HttpResponseRedirect('/app/sign_in/')
 
 

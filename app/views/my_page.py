@@ -85,13 +85,13 @@ def my_page(request, menu):
         context['take'] = my_take_section_list
         return render(request, 'app/my_page_take.html', context)
     elif menu == "save":
-        user_name = request.POST.get("user_name")
-        nickname = request.POST.get("nickname")
+        last_name = request.POST.get("user_name")
+        first_name = request.POST.get("nickname")
 
         this_user = request.user
         user = User.objects.filter(username=this_user).first()
-        user.first_name = nickname
-        user.last_name = user_name
+        user.first_name = first_name
+        user.last_name = last_name
         user.save()
         return HttpResponse("OK")
     return render(request, 'app/my_page_info.html', {})
@@ -99,17 +99,17 @@ def my_page(request, menu):
 
 def my_page_option(request, option):
     if option == "save":
-        user_name = request.POST.get("user_name")
-        nickname = request.POST.get("nickname")
+        last_name = request.POST.get("user_name")
+        first_name = request.POST.get("nickname")
 
         this_user = request.user
-        this_user.first_name = nickname
-        this_user.last_name = user_name
+        this_user.first_name = first_name
+        this_user.last_name = last_name
         this_user.save()
 
         user = User.objects.filter(user_id=this_user).first()
-        user.first_name = nickname
-        user.last_name = user_name
+        user.first_name = first_name
+        user.last_name = last_name
 
         # user.save()
 
