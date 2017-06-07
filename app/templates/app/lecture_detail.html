@@ -28,7 +28,8 @@
         <div class="row">
             <div class="col-sm-3 col-md-2 sidebar">
                 <ul class="nav nav-sidebar">
-                    <li style="font-weight: bold; margin-bottom: 10px;"><a href="{% url 'lecture_all' %}">- 전체 강좌</a></li>
+                    <li style="font-weight: bold; margin-bottom: 10px;"><a href="{% url 'lecture_all' %}">- 전체 강좌</a>
+                    </li>
                     {% for category in category_list %}
                         <li style="font-weight: bold; margin-bottom: 10px;" id="category-{{ category.id }}"
                             name="category-{{ category.id }}"><a href="#">
@@ -47,47 +48,35 @@
                 </ul>
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <div class="page-header">
-                    <h1>강좌 개설</h1>
-                </div>
-                <form class="form-horizontal" method="post" action="/app/lecture/add">
-
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for="category">카테고리</label>
-                        <div class="col-sm-6">
-                            {% for category in category_list %}
-                                <input type="checkbox" id="category-{{ category.id }}" name="category-{{ category.id }}"
-                                       value="{{ category.category_name }}">{{ category.category_name }}
-                            {% endfor %}
-                        </div>
+                {% for a in data %}
+                    <div class="page-header">
+                        <h1>강좌명 : {{ a.lecture_name }}</h1>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for="lecture_name">강좌명</label>
-                        <div class="col-sm-5">
-                            <input class="form-control" id="lecture_name" name="lecture_name" value="" type="text">
-                        </div>
-                        <button class="btn btn-warning" type="button" onclick='lecture_distinct_check("lecture_name")'>
-                            중복확인
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>카테고리</th>
+                            <th>강좌 설명</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>{{ a.lecture_cate }}</td>
+                            <td>{{ a.lecture_desc }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <form action="/app/lecture/detail/?data={{ a.lecture_name }}" method="post">
+                    {% csrf_token %}
+                    <div class="col-sm-12 text-center">
+                        <button class="btn btn-primary" type="submit"
+                                id="lecture_sign_up_button">분기강좌 개설
                         </button>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for="lecture_describe">강좌 설명</label>
-                        <div class="col-sm-6">
-                            <textarea class="form-control" id="lecture_describe" name="lecture_describe"
-                                      placeholder="간단한 설명을 입력하세요.(300자 제한)" type="text" maxlength="300"
-                                      style="height:100px" wrap="soft"></textarea>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-12 text-center">
-                            <button class="btn btn-primary" disabled="disabled" type="submit"
-                                    id="lecture_sign_up_button">등록하기<i class="fa fa-check spaceLeft"></i>
-                            </button>
-                            <button class="btn btn-danger" type="button">취소<i class="fa fa-times spaceLeft"></i>
-                            </button>
-                        </div>
-                    </div>
                 </form>
+                {% endfor %}
+
+
             </div>
         </div>
     </div>
