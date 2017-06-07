@@ -4,7 +4,8 @@
 
 function lecture_distinct_check(_lecture_input_id) {
     var lecture_input_id = document.getElementById("" + _lecture_input_id);
-    var lecture_id = _lecture_input_id.value;
+    var lecture_id = lecture_input_id.value;
+    console.log(lecture_id);
 
     $.ajaxSetup({
         headers: {"X-CSRFToken": get_cookie("csrftoken")}
