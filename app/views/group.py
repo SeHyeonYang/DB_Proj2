@@ -11,15 +11,23 @@ def group_home(request):
     for group in group_list:
         temp_dict = dict()
         temp_dict['group_name'] = group.group_name
-        print(str(group.group_name))
         temp_dict['leader'] = group.leader
         temp_dict['date'] = group.date
         temp_dict['comments'] = group.comments
-        temp_dict['category'] = group.category
-
-<<<<<<< HEAD
-        context={}
+        temp_dict['category'] = group.category.category_name
+        context = {}
         context['group_list'] = group_list
+
+    usergroup_list = UserGroup.objects.filter(user_id = request.user)
+
+    for usergroup in usergroup_list:
+        temp_dict = dict()
+        temp_dict['group_name'] = usergroup.group_id
+        print(str(usergroup.group_id))
+        context={}
+        context['usergroup_list'] = usergroup_list
+
+
         if request.method == "GET":
             return render(request, 'app/group_home.html', context)
 
@@ -38,12 +46,6 @@ def group_home(request):
             user_group.save()
 
     return render(request, 'app/group_home.html', context)
-=======
-
-def group_create(request):
-    category_list = Category.objects.all()
->>>>>>> 31f1b7d556a0f44de756f66a94ef3375c7a500b5
-
 
 def group_create(request):
     category_list = Category.objects.all()

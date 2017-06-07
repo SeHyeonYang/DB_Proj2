@@ -18,6 +18,18 @@
                 </tr>
                 </thead>
 
+                <tbody>
+                {% for usergroup in usergroup_list %}
+                                <tr>
+
+                                    {% csrf_token %}
+                                    <td></td>
+                                    <td id="group-{{usergroup.group_name}}" name="group_name" value="{{usergroup.group_name}}">{{usergroup.group_name}}</td>
+
+                                </tr>
+                            {% endfor %}
+                </tbody>
+
             </table>
         </div>
     </div>
@@ -57,22 +69,23 @@
                     </thead>
                     <tdody>
                         </tr>
-                        <form class="form-horizontal" method="post" action="/app/group_home/">
+
                             {% for group in group_list %}
-                                {% csrf_token %}
                                 <tr>
+                                <form class="form-horizontal" method="post" action="/app/group_home/">
+                                    {% csrf_token %}
                                     <td id="group-{{group.id}}" name="group_id-{{group.id}}" value="{{group.id}}">{{group.id}}</td>
                                     <td id="group-{{group.group_name}}" name="group_name" value="{{group.group_name}}">{{group.group_name}}</td>
                                     <input id="group_hidden" name ="group_id" value= "{{group.id}}" type="hidden">
                                     <td id="group-{{group.leader}}" name="group_leader" value="{{group.leader}}">{{group.leader}}</td>
-                                    <td id="group-{{group.category}}" name="category" value="{{group.category}}">{{group.catergory}}</td>
+                                    <td id="group-{{group.category}}" name="category" value="{{group.category.category_name}}">{{group.category.category_name}}</td>
                                     <td>
                                         <input type=submit value="가입하기" onclick ="this.disabled = true">
                                     </td>
+                                     </form>
                                 </tr>
-
                             {% endfor %}
-                        </form>
+
                     </tdody>
 
 
