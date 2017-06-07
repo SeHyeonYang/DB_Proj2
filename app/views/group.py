@@ -14,38 +14,21 @@ def group_home(request):
         temp_dict['leader'] = group.leader
         temp_dict['date'] = group.date
         temp_dict['comments'] = group.comments
-        temp_dict['category'] = group.category.category_name
+        temp_dict['category'] = group.category
         context = {}
         context['group_list'] = group_list
-
-    usergroup_list = UserGroup.objects.filter(user_id = request.user)
-
-    for usergroup in usergroup_list:
-        temp_dict = dict()
-        temp_dict['group_name'] = usergroup.group_id
-        print(str(usergroup.group_id))
-        context={}
-        context['usergroup_list'] = usergroup_list
-
-
+        print("OK1")
         if request.method == "GET":
             return render(request, 'app/group_home.html', context)
-
         else:
-            data= request.POST
-            print(data)
-            this_group_id = data.get('group_id')
-            group_id= Group.objects.filter(id=this_group_id).first()
-            group = group_id
-            #print(group_id)
-            this_user= request.user
-            user = User.objects.filter(username=this_user).first
-            user_id = user
-            print(str(user_id))
-            user_group = UserGroup.objects.create(group_id=group, user_id=this_user)
+            print("OK2")
+            group_id = request.GET.get('data')[:-1]
+            group = Group.objects.filter(id=group_id).first()
+            user_group = UserGroup.objects.create(group_id=group, user_id=request.user)
             user_group.save()
+            return HttpResponse("OK")
 
-    return render(request, 'app/group_home.html', context)
+
 
 def group_create(request):
     category_list = Category.objects.all()
@@ -69,11 +52,12 @@ def group_create(request):
         group = group_cateogry
         group_creater = request.user
         create_time = time.ctime()
-        #print(str(group_catergory))
-        group = Group.objects.create(group_name=group_name, leader= group_creater ,date=create_time, comments=group_comments, category=group)
+        # print(str(group_catergory))
+        group = Group.objects.create(group_name=group_name, leader=group_creater, date=create_time,
+                                     comments=group_comments, category=group)
         group.save()
         return render(request, 'app/group_create.html', context)
 
 
 def group_private(request):
-    return render(request, 'app/group_private.html',{})
+    return render(request, 'app/group_private.html', {})

@@ -1,0 +1,60 @@
+{% extends 'app/menu_bar.html' %}
+{%  block content %}
+
+    <html>
+    <head>
+        <style>
+            tr, td{
+                align: center;
+            }
+        </style>
+        <h2>
+        </h2>
+        <!-- Latest compiled and minified CSS -->
+    </head>
+    <body>
+    <div class="container">
+        <table class="table table-responsive" align="center" width="300">
+
+                <tbody>
+                <form name=writeform style="position: absolute; top: 100px">
+                    <tr>
+                        <th width="250"> <center> 제목 </center> </th>
+                        <td> {{ article.title }} </td>
+                    </tr>
+                    <tr>
+                        <th>  <center>카테고리 </center></th>
+                         <td> 카테고리 </td>
+                    </tr>
+                    <tr>
+                        <th>  <center> 작성자 </center></th>
+                        <td> {{ article.user_id }} </td>
+                    </tr>
+                     <tr>
+                        <th>  <center> 작성일 </center></th>
+                        <td> {{ article.date }} </td>
+                    </tr>
+                    <tr>
+                        <th> <center>내용</center></th>
+                        <td height="450">{{ article.contents }}</td>
+                    </tr>
+
+                    <tr>
+
+                        <td></td>
+                        <td align="right"> <button class="btn btn-default" type="button" onclick="location.href = '/app/article/total/'">삭제</button>
+                            <button class="btn btn-default" type="button" onclick="location.href = '/app/article/total/'">목록</button></td>
+
+                        <!-- <a class="btn btn-default" onclick="sendData()"> 등록 </a>
+                        <a class="btn btn-default" type="reset"> reset </a>
+                        <a class="btn btn-default" onclick="javascript:location.href='list.jsp'">글 목록으로...</a> -->
+                        </td>
+                    </tr>
+                </form>
+                </tbody>
+
+        </table>
+    </div>
+    </body>
+    </html>
+{% endblock content %}

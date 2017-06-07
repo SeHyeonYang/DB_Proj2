@@ -108,3 +108,23 @@ function make_friend_relationship(id) {
     });
 
 }
+
+function join_group(group_id){
+  $.ajaxSetup({
+        headers: {"X-CSRFToken": get_cookie("csrftoken")}
+    });
+
+    $.ajax({
+        url: '/app/group_home/?data=' + group_id + '/',
+        type: 'POST',
+        data: group_id,
+        success: function (result) {
+            alert("가입했습니다.");
+            location.href = '/app/group_home/'
+        },
+        error: function (error) {
+            alert("가입할 수 없습니다.");
+        }
+    });
+
+}

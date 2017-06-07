@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^sign_out/$', views.sign_out, name='sign_out'),
     url(r'^group_home/$', views.group_home, name='group_home'),
     url(r'^id_check/$', views.id_check, name='id_check'),
+    url(r'^article/(?P<pk>[\d]+)/$', views.info_article, name='article'),
     url(r'^article/(?P<option>[\w]+)/$', views.article, name='article'),
     url(r'^my_page/(?P<menu>[\w]+)/$', views.my_page, name='my_page'),
     url(r'^group_create/$',views.group_create,name ='group_create'),

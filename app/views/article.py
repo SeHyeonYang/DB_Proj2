@@ -4,13 +4,14 @@ from django.http import HttpResponseRedirect, HttpResponse
 from app.models import *
 import json
 
-def article(request, option):
 
-    if option == 'total' :
+def article(request, option):
+    if option == 'total':
+
         article_list = Article.objects.all()
         for article in article_list:
             temp_dict = dict()
-            temp_dict['article_id'] = article.article_id
+            temp_dict['article_id'] = article.id
             temp_dict['article_user'] = article.user_id
             temp_dict['article_title'] = article.title
             temp_dict['article_date'] = article.date
@@ -18,7 +19,7 @@ def article(request, option):
         context['article_list'] = article_list
         return render(request, 'app/total_article.html', context)
 
-    elif option == 'write' :
+    elif option == 'write':
         category_list = Category.objects.all()
         for category in category_list:
             temp_dict = dict()
@@ -27,3 +28,9 @@ def article(request, option):
         context = {}
         context['category_list'] = category_list
         return render(request, 'app/write_article.html', context)
+
+
+
+def info_article(request, pk):
+    context = Article.objects.get(id=pk)
+    return render(request, 'app/info_article.html', {'article': context, })
