@@ -1,5 +1,85 @@
 {% extends 'app/menu_bar.html' %}
 {% block content %}
+<style>
+.left-box {
+  float: left;
+    margin-left : 100px;
+  width: 40%;
+}
+.right-box {
+  float: right;
+  margin-right : 100px;
+    width: 40%;
+}
+</style>
 
+<div class="page-header text-center"  >
+        <h1>그룹 이름</h1>
+    </div>
+<div class='left-box'>
+<div class="text-center">
+ <label for="grou_board">그룹원</label>
+
+    <div class="table-responsive">
+                <table class="table table-striped">
+
+                    <thead>
+
+                    <tr>
+                        <th style="text-align: center">번호</th>
+                        <th style="text-align: center">이름</th>
+                        <th style="text-align: center">닉네임</th>
+
+                    </tr>
+
+                    </thead>
+
+                </table>
+            </div>
+            <div class ="text-center">
+                <ul class="pagination">
+                    <li><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class='right-box'>
+<div class="text-center">
+ <label for="grou_board">그룹 게시판</label>
+
+    <div class="table-responsive">
+                <table class="table table-striped">
+
+                    <thead>
+
+                    <tr>
+                        <th style="text-align: center">번호</th>
+                        <th style="text-align: center">제목</th>
+                        <th style="text-align: center">작성자</th>
+                        <th style="text-align: center">날짜</th>
+
+                    </tr>
+
+                    </thead>
+
+                </table>
+            </div>
+            <div class ="text-center">
+                <ul class="pagination">
+                    <li><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock content %}

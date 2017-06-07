@@ -10,13 +10,16 @@ def group_home(request):
 
 
 def group_create(request):
-    if request.method == "GET":
-        return render(request, 'app/group_create.html', {})
-    else:
-        data = request.POST
-        group_name = data['group_name']
-        print(str(group_name))
-        return render(request, 'app/group_create.html', {})
+    category_list = Category.objects.all()
+
+    for category in category_list:
+        temp_dict = dict()
+        temp_dict['category_id'] = category.id
+        temp_dict['category_name'] = category.category_name
+    context = []
+    context['category_list'] = category_list
+    return render(request, 'app/group_create.html', context)
+
 
 def group_private(request):
     return render(request, 'app/group_private.html',{})

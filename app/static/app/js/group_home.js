@@ -17,3 +17,6 @@ angular.module('AniTheme').controller('DropdownCtrl', function ($scope, $log) {
     };
 });
 
+  $('input[type="checkbox"]').on('change', function() {
+   $(this).siblings('input[type="checkbox"]').prop('checked', false);
+});
