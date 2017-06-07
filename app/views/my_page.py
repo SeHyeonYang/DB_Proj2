@@ -15,8 +15,8 @@ def my_page(request, menu):
     elif menu == "friend":
         if request.method == "POST":
             action = request.GET.get('action')
-            option = request.GET.get('option')[:-1]
             if action == "search":
+                option = request.GET.get('option')[:-1]
                 if option == "findbyall":
                     data = request.POST.get("search-friend-by-all")
                     friend_search_list = User.objects.filter(Q(username=data) | Q(first_name=data) | Q(last_name=data))
@@ -38,21 +38,18 @@ def my_page(request, menu):
                         temp_dict['friend_search_nickname'] = a.first_name
                         search_list_sub.append(temp_dict)
                     context['friend_search_list_sub'] = search_list_sub
+            elif action == "befriend":
+                friend_id= request.GET.get('data')[:-1]
+                friend = User.objects.filter(username=friend_id).first()
+                new_relationship = Friend.objects.create(sender_id=user, receiver_id=friend)
+                new_relationship.save()
 
-        friends = Friend.objects.filter(sender_id=user)
+        friends = Friend.objects.filter(Q(sender_id=user) | Q(receiver_id=user))
         friend_list = []
         for friend in friends:
             temp_dict = dict()
             temp_dict['friend_id'] = friend.receiver_id
             friend_list.append(temp_dict)
-
-        temp_dict = dict()
-        temp_dict['friend_id'] = "test"
-        friend_list.append(temp_dict)
-        temp_dict = dict()
-        temp_dict['friend_id'] = "test2"
-        friend_list.append(temp_dict)
-
         context['friends'] = friend_list
         return render(request, 'app/my_page_friend.html', context)
     elif menu == "lecture":

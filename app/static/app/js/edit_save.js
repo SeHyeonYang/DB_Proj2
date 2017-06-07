@@ -88,3 +88,23 @@ function search_friend(option, data) {
         }
     });
 }
+
+function make_friend_relationship(id) {
+    $.ajaxSetup({
+        headers: {"X-CSRFToken": get_cookie("csrftoken")}
+    });
+
+    $.ajax({
+        url: '/app/my_page/friend/?action=befriend&data=' + id + '/',
+        type: 'POST',
+        data: id,
+        success: function (result) {
+            alert(id + "에게 친구 신청을 마쳤습니다.");
+            location.href = '/app/my_page/friend/'
+        },
+        error: function (error) {
+            alert("친구로 신청할 수 없습니다.");
+        }
+    });
+
+}

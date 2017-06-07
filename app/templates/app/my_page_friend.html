@@ -101,7 +101,7 @@
                             <td>{{ friend.friend_search_id }}</td>
                             <td>{{ friend.friend_search_name }}</td>
                             <td>{{ friend.friend_search_nickname }}</td>
-                            <td><a>신청하기</a></td>
+                            <td><a id="make-friend-relation-{{ friend.friend_search_id }}" onclick='make_friend_relationship("{{ friend.friend_search_id }}")'>신청하기</a></td>
                         </tr>
                     {% endfor %}
                     </tbody>
