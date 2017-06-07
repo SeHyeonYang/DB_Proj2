@@ -11,7 +11,7 @@
     </head>
     <body>
     <div class="container">
-        <form class="form-horizontal" method="post" action="/app/article/write">
+        <form class="form-horizontal" method="post" action="/app/article/write/">
             {% csrf_token %}
             <table class="table table-bordered" >
 
@@ -19,7 +19,7 @@
                 <form>
                     <tr>
                         <th>  제목 </th>
-                        <td><input type="text" placeholder="제목을 입력하세요. " name="subject" class="form-control"/></td>
+                        <td><input type="text" placeholder="제목을 입력하세요. " name="title" class="form-control"/></td>
                     </tr>
                     <tr>
                         <th>  카테고리 </th>
@@ -45,7 +45,7 @@
 
                     <tr>
                         <td colspan="2">
-                            <button class="btn btn-default pull-right" type="submit" onclick="location.href = '/app/article/total/'">등록</button>
+                            <button class="btn btn-default pull-right" type="submit" onclick="location.href = '/app/article/write/'">등록</button>
                             <button class="btn btn-default pull-left" type="button" onclick="location.href = '/app/article/total/'">목록</button>
 
                             <!-- <a class="btn btn-default" onclick="sendData()"> 등록 </a>
