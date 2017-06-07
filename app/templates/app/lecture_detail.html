@@ -23,6 +23,7 @@
     </style>
 {% endblock head %}
 {% block content %}
+
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-3 col-md-2 sidebar">
@@ -47,40 +48,37 @@
                 </ul>
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <div class="page-header">
-                    <h1>전체 강좌</h1>
-                </div>
-                <div class="table-responsive" id="lecture_list">
+                {% for a in data %}
+                    <div class="page-header">
+                        <h1>강좌명 : {{ a.lecture_name }}</h1>
+                    </div>
                     <table class="table table-striped">
-
                         <thead>
-
                         <tr>
                             <th>카테고리</th>
-                            <th>강좌명</th>
+                            <th>강좌 설명</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {% if course_list %}
-                            {% for course in course_list %}
-                                <tr>
-                                <td>{{ course.lecture_cate }}</td>
-                                <td><a style="cursor:hand" href="/app/lecture/detail/?data={{ course.lecture_name }}">{{ course.lecture_name }}</a></td>
-                                </tr>
-                            {% endfor %}
-                        {% endif %}
+                        <tr>
+                            <td>{{ a.lecture_cate }}</td>
+                            <td>{{ a.lecture_desc }}</td>
+                        </tr>
                         </tbody>
                     </table>
-                </div>
-                <form action="/app/lecture/all/" method="post">
+                    <form action="/app/lecture/detail/?data={{ a.lecture_name }}" method="post">
                     {% csrf_token %}
                     <div class="col-sm-12 text-center">
                         <button class="btn btn-primary" type="submit"
-                                id="lecture_sign_up_button">강좌 개설
+                                id="lecture_sign_up_button">분기강좌 개설
                         </button>
                     </div>
                 </form>
+                {% endfor %}
+
+
             </div>
         </div>
     </div>
+
 {% endblock content %}

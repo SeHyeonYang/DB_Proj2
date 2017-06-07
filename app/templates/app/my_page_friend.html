@@ -3,27 +3,47 @@
     <div class="page-header">
         <h1>마이 페이지 - 친구</h1>
     </div>
-    {% if friends %}
-        {% for friend in friends %}
-            <p>{{ friend.friend_id }}</p>
-        {% endfor %}
-    {% endif %}
-
+    <div class="container">
+        {% if only_me_friend %}
+            <div class="page-header">
+                <h3>내가 등록한 친구</h3>
+            </div>
+            {% for friend in only_me_friend %}
+                <p>{{ friend.friend_id }}</p>
+            {% endfor %}
+        {% endif %}
+        {% if only_you_friend %}
+            <div class="page-header">
+                <h3>나를 등록한 친구</h3>
+            </div>
+            {% for friend in only_you_friend %}
+                <p>{{ friend.friend_id }}</p>
+            {% endfor %}
+        {% endif %}
+        {% if together_friend %}
+            <div class="page-header">
+                <h3>서로 등록한 친구</h3>
+            </div>
+            {% for friend in together_friend %}
+                <p>{{ friend.friend_id }}</p>
+            {% endfor %}
+        {% endif %}
+    </div>
     <div class="page-header">
         <h2>친구 찾기</h2>
     </div>
-      <form class="form-horizontal">
-       {% csrf_token %}
+    <form class="form-horizontal" method="post" action="/app/my_page/friend/?action=search&option=findbyall/">
+        {% csrf_token %}
         <div class="form-group">
             <label class="col-sm-3 control-label" for="search-friend">전체 찾기</label>
             <div class="col-sm-5">
-                <input class="form-control" id="search-friend-by-all" name="id" value="" type="text">
+                <input class="form-control" id="search-friend-by-all" name="search-friend-by-all" value="" type="text">
             </div>
-            <button id="search-button" class="btn btn-success" type="button" onclick="search_friend('search','search-friend-by-all')">찾기</button>
+            <button id="search-button" class="btn btn-success" type="submit">찾기</button>
         </div>
     </form>
     <form class="form-horizontal" method="post">
-     {% csrf_token %}
+        {% csrf_token %}
         <div class="form-group">
             <label class="col-sm-3 control-label" for="search-friend">ID로 찾기</label>
             <div class="col-sm-5">
@@ -32,8 +52,8 @@
             <button id="search-button" class="btn btn-success" type="submit">찾기</button>
         </div>
     </form>
-      <form class="form-horizontal" method="post">
-       {% csrf_token %}
+    <form class="form-horizontal" method="post">
+        {% csrf_token %}
         <div class="form-group">
             <label class="col-sm-3 control-label" for="search-friend">이름으로 찾기</label>
             <div class="col-sm-5">
@@ -42,8 +62,8 @@
             <button id="search-button" class="btn btn-success" type="submit">찾기</button>
         </div>
     </form>
-      <form class="form-horizontal" method="post">
-       {% csrf_token %}
+    <form class="form-horizontal" method="post">
+        {% csrf_token %}
         <div class="form-group">
             <label class="col-sm-3 control-label" for="search-friend">닉네임으로 찾기</label>
             <div class="col-sm-5">
@@ -52,4 +72,62 @@
             <button id="search-button" class="btn btn-success" type="submit">찾기</button>
         </div>
     </form>
+    <div class="container">
+        {% if friend_search_list is not None or friend_search_list_sub is not None %}
+            <div class="page-header">
+                <h2>찾기 결과</h2>
+            </div>
+            <div class="table-responsive">
+                <div class="page-header">
+                    <h3>일치</h3>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>아이디</th>
+                        <th>이름</th>
+                        <th>닉네임</th>
+                        <th>신청하기</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for friend in friend_search_list %}
+                        <tr>
+                            <td>{{ friend.friend_search_id }}</td>
+                            <td>{{ friend.friend_search_name }}</td>
+                            <td>{{ friend.friend_search_nickname }}</td>
+                            <td><a>신청하기</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-responsive">
+                <div class="page-header">
+                    <h3>부분 일치</h3>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>아이디</th>
+                        <th>이름</th>
+                        <th>닉네임</th>
+                        <th>신청하기</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for friend in friend_search_list_sub %}
+                        <tr>
+                            <td>{{ friend.friend_search_id }}</td>
+                            <td>{{ friend.friend_search_name }}</td>
+                            <td>{{ friend.friend_search_nickname }}</td>
+                            <td><a id="make-friend-relation-{{ friend.friend_search_id }}"
+                                   onclick='make_friend_relationship("{{ friend.friend_search_id }}")'>신청하기</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
 {% endblock my_page %}

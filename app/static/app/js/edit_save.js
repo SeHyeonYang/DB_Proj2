@@ -76,7 +76,7 @@ function search_friend(option, data) {
     var data_source = document.getElementById(data);
 
     $.ajax({
-        url: '/app/my_page/friend/?action=search&option=' + option + '&data=' + data_source.data + '/',
+        url: '/app/my_page/friend/?action=search&option=findbyall&data=' + data_source.value + '/',
         type: 'POST',
         data: friends,
         success: function (result) {
@@ -87,4 +87,24 @@ function search_friend(option, data) {
             alert("수정할 수 없습니다.");
         }
     });
+}
+
+function make_friend_relationship(id) {
+    $.ajaxSetup({
+        headers: {"X-CSRFToken": get_cookie("csrftoken")}
+    });
+
+    $.ajax({
+        url: '/app/my_page/friend/?action=befriend&data=' + id + '/',
+        type: 'POST',
+        data: id,
+        success: function (result) {
+            alert(id + "에게 친구 신청을 마쳤습니다.");
+            location.href = '/app/my_page/friend/'
+        },
+        error: function (error) {
+            alert("친구로 신청할 수 없습니다.");
+        }
+    });
+
 }

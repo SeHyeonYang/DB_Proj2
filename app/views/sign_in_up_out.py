@@ -83,3 +83,10 @@ def id_check(request):
     temp = dict()
     temp['distinct_check'] = check
     return HttpResponse(json.dumps(temp))
+
+
+def leave(request):
+    user = User.objects.filter(username=request.user)
+    logout(request)
+    user.delete()
+    return HttpResponseRedirect('/app/welcome/')

@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-
+from datetime import datetime, timedelta
 
 # Create your models here.
 
@@ -12,6 +12,11 @@ from django.db import models
 #    nickname = models.CharField(max_length=45)
 #    last_login = models.DateTimeField(blank=True, null=True)
 #
+def default_time():
+    now = datetime.now()
+    start = now.replace(hour=22, minute=0, second=0, microsecond=0)
+    return start if start > now else start + timedelta(days=1)
+
 
 class Teacher(models.Model):
     # teacher_id is auto serial key. 1,2,3,4,...
@@ -48,6 +53,8 @@ class Section(models.Model):
     due_date = models.DateField()
     max_capacity = models.IntegerField()
     min_capacity = models.IntegerField()
+    start_time = models.TimeField(default=default_time())
+    end_time = models.TimeField(default=default_time())
 
 
 class TimeSlot(models.Model):
@@ -95,3 +102,6 @@ class Article(models.Model):
     contents = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
     notice = models.BooleanField(default=False)
+
+
+
