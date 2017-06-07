@@ -7,17 +7,32 @@ import json
 
 
 def group_home(request):
-    group_list = Group.objects.all()
-    for group in group_list:
+    _group_list = Group.objects.all()
+    group_list = []
+    for group in _group_list:
         temp_dict = dict()
+        temp_dict['group_id'] = group.id
         temp_dict['group_name'] = group.group_name
         temp_dict['leader'] = group.leader
         temp_dict['date'] = group.date
         temp_dict['comments'] = group.comments
         temp_dict['category'] = group.category
-        context = {}
-        context['group_list'] = group_list
-        print("OK1")
+        group_list.append(temp_dict)
+    context = {}
+    context['group_list'] = group_list
+
+    _my_group_list = Group.objects.filter(usergroup__user_id=request.user)
+    my_group_list = []
+    for group in _my_group_list:
+        temp_dict = dict()
+        temp_dict['group_id'] = group.id
+        temp_dict['group_name'] = group.group_name
+        temp_dict['leader'] = group.leader
+        temp_dict['date'] = group.date
+        temp_dict['comments'] = group.comments
+        temp_dict['category'] = group.category
+        my_group_list.append(temp_dict)
+    context['my_group_list'] = my_group_list
 
     if request.method == "GET":
         return render(request, 'app/group_home.html', context)
@@ -31,12 +46,14 @@ def group_home(request):
 
 
 def group_create(request):
-    category_list = Category.objects.all()
-    for category in category_list:
+    _category_list = Category.objects.all()
+    category_list = []
+    for category in _category_list:
         temp_dict = dict()
         temp_dict['category_id'] = category.id
         temp_dict['category_name'] = category.category_name
-    context = []
+        category_list.append(temp_dict)
+    context = {}
     context['category_list'] = category_list
 
     if request.method == "GET":

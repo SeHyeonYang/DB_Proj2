@@ -12,6 +12,14 @@ from datetime import datetime, timedelta
 #    nickname = models.CharField(max_length=45)
 #    last_login = models.DateTimeField(blank=True, null=True)
 #
+
+
+class AppUser(models.Model):
+    user = models.OneToOneField(User)
+    name = models.CharField(max_length=45)
+    nickname = models.CharField(max_length=45)
+
+    
 def default_time():
     now = datetime.now()
     start = now.replace(hour=22, minute=0, second=0, microsecond=0)
