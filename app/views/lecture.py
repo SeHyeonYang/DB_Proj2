@@ -64,6 +64,7 @@ class LectureAdd(View):  # 강좌 개설
 
 class LectureDetail(View):
     def get(self, request):
+        category_list = Category.objects.all()
         searchText = request.GET.get("data")
         print(searchText)
         data = dict()
@@ -76,12 +77,12 @@ class LectureDetail(View):
         data_list.append(data)
         print(data)
         context = {}
+        context['category_list'] = category_list
         context['data'] = data_list
         return render(request, 'app/lecture_detail.html', context)
 
-    def post(self, request):
 
-        return render(request, 'app/lecture_section_add.html', {})
+
 
 def lecture_check(request):
     lecture_name = request.GET.get('data')[:-1]
@@ -93,31 +94,89 @@ def lecture_check(request):
 
 
 class SectionAdd(View):
-    def get(self, request):
+    def get(self, request, lecture):
         category_list = Category.objects.all()
+        data = dict()
+        course = Course.objects.filter(title=lecture)[0]
+        course_category = Category.objects.filter(id=course.category_id.id)[0]
+        data['lecture_name'] = course.title
+        data['lecture_cate'] = course_category.category_name
+        data['lecture_desc'] = course.comments
+        data_list = list()
+        data_list.append(data)
 
-        for category in category_list:
-            temp_dict = dict()
-            temp_dict['category_id'] = category.id
-            temp_dict['category_name'] = category.category_name
         context = {}
         context['category_list'] = category_list
-        return HttpResponseRedirect('/app/lecture/all')
+        context['data'] = data_list
 
-    def post(self, request):
+        return render(request, 'app/lecture_section_add.html', context)
+
+    def post(self, request, lecture):
         data = request.POST
-        lecture_sum = data['lecture_sum']
-        lecture_min_pnum = data['lecture_min_pnum']
-        lecture_max_pnum = data['lecture_max_pnum']
-        lecture_place = data['lecture_place']
-        monday_button = data['monday_button']
-        tuesday_button = data['tuesday_button']
-        wednesday_button = data['wednesday_button']
-        thursday_button = data['thursday_button']
-        friday_button = data['friday_button']
-        saturday_button = data['saturday_button']
-        sunday_button = data['sunday_button']
-        lecture_start_time = data['lecture_start_time']
-        lecture_finish_time = data['lecture_finish_time']
+        print(data)
+        lecture_name = data['lecture_name']
+        section_sum = data['section_sum']
+        section_min_pnum = data['section_min_pnum']
+        section_max_pnum = data['section_max_pnum']
+        section_place = data['section_place']
+
+        day_count = 0
+        try:
+            monday_button = data['monday_button']
+            day_count+=1
+        except:
+            pass
+        try:
+            tuesday_button = data['tuesday_button']
+            day_count+=1
+        except:
+            pass
+        try:
+            wednesday_button = data['wednesday_button']
+            day_count+=1
+        except:
+            pass
+        try:
+            thursday_button = data['thursday_button']
+            day_count+=1
+        except:
+            pass
+        try:
+            friday_button = data['friday_button']
+            day_count+=1
+        except:
+            pass
+        try:
+            saturday_button = data['saturday_button']
+            day_count+=1
+        except:
+            pass
+        try:
+            sunday_button = data['sunday_button']
+            day_count+=1
+        except:
+            pass
+
+        try:
+            section_start_time = data['section_start_time']
+        except:
+            pass
+        try:
+            section_finish_time = data['section_finish_time']
+        except:
+            pass
+        section_start_date = data['section_start_date']
+        section_end_date = data['section_end_date']
+        section_deadline = data['section_deadline']
+
+        course = Course.objects.filter(title=lecture_name)[0]
+        course_id = course.id
+
+        section = Section.objects.create(course_id=course, start_date=section_start_date, end_date=section_end_date, times=day_count, location=section_place, price=section_sum, due_date=section_deadline, max_capacity=section_max_pnum, min_capacity=section_min_pnum, start_time=section_start_time, end_time=section_finish_time)
+        section.save()
+
+        return HttpResponseRedirect('/app/lecture/detail/?data='+course.title)
+
+
 
 

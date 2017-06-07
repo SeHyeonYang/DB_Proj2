@@ -23,11 +23,30 @@
     </style>
 {% endblock head %}
 {% block content %}
+    <script>
+        $(document).ready(function () {
+            $(".btn-circle").click(function () {
+                var unselected = $(this).hasClass("unselected");
+                //var type = $(this).attr("target");
+
+                var checkbox = $("#" + $(this).attr("check_target"));
+                $(checkbox).prop("checked", unselected);
+                if (unselected) {
+                    $(this).removeClass("unselected");
+                    $(this).addClass("btn-warning");
+                } else {
+                    $(this).addClass("unselected");
+                    $(this).removeClass("btn-warning");
+                }
+            });
+        });
+    </script>
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-3 col-md-2 sidebar">
                 <ul class="nav nav-sidebar">
-                    <li style="font-weight: bold; margin-bottom: 10px;"><a href="{% url 'lecture_all' %}">- 전체 강좌</a></li>
+                    <li style="font-weight: bold; margin-bottom: 10px;"><a href="{% url 'lecture_all' %}">- 전체 강좌</a>
+                    </li>
                     {% for category in category_list %}
                         <li style="font-weight: bold; margin-bottom: 10px;" id="category-{{ category.id }}"
                             name="category-{{ category.id }}"><a href="#">
@@ -47,58 +66,69 @@
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <div class="page-header">
-                    <h1>강좌 분기 개설</h1>
+                    <h1>분기강좌 개설</h1>
                 </div>
-
-                <label class="col-sm-3 control-label" for="lecture_category">카테고리</label>
-                <div class="col-sm-6">
-                    <p>[강좌id로 카테고리 받아오기]</p>
-                </div>
-                <label class="col-sm-3 control-label" for="lecture_name">강좌명</label>
-                <div class="col-sm-5">
-                    <p>[강좌id로 강좌명 받아오기]</p>
-                </div>
-                <label class="col-sm-3 control-label" for="lecture_name">강좌 설명</label>
-                <div class="col-sm-6">
-                    <p>[강좌id로 강좌설명 받아오기]</p>
-                </div>
-                <form class="form-horizontal" method="post" action="/app/lecture(여기 lecture_id)/section_add">
-
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for="section_sum">수강금액</label>
-                        <div class="col-sm-5">
-                            <input class="form-control" id="section_sum" name="section_sum" value="" type="number"
-                                   style="text-align:right;">
+                {% if data %}
+                    {% for a in data %}
+                        <form class="form-horizontal" method="post"
+                              action="/app/lecture/{{ a.lecture_name }}/section/add/">
+                        {% csrf_token %}
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>카테고리</th>
+                                <th>강좌명</th>
+                                <th>강좌 설명</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{ a.lecture_cate }}</td>
+                                <td>{{ a.lecture_name }}</td>
+                                <td>{{ a.lecture_desc }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="form-group">
+                            <input hidden type="text" name="lecture_name" id="lecture_name"
+                                   value="{{ a.lecture_name }}">
                         </div>
-                        <div class="col-sm-1">
-                            <span>원</span>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="section_sum">수강금액</label>
+                            <div class="col-sm-5">
+                                <input class="form-control" id="section_sum" name="section_sum" value=""
+                                       type="number"
+                                       style="text-align:right;">
+                            </div>
+                            <div class="col-sm-1">
+                                <span>원</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for="section_min_pnum">최소 수강인원</label>
-                        <div class="col-sm-1">
-                            <input class="form-control" id="section_min_pnum" name="section_min_pnum" value=""
-                                   type="number">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="section_min_pnum">최소 수강인원</label>
+                            <div class="col-sm-1">
+                                <input class="form-control" id="section_min_pnum" name="section_min_pnum" value=""
+                                       type="number">
+                            </div>
+                            <div class="col-sm-1">
+                                <span>명</span>
+                            </div>
+                            <label class="col-sm-2 control-label" for="section_max_pnum">최대 수강인원</label>
+                            <div class="col-sm-1">
+                                <input class="form-control" id="section_max_pnum" name="section_max_pnum" value=""
+                                       type="number">
+                            </div>
+                            <div class="col-sm-1">
+                                <span>명</span>
+                            </div>
                         </div>
-                        <div class="col-sm-1">
-                            <span>명</span>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="section_place">장소</label>
+                            <div class="col-sm-6">
+                                <input class="form-control" id="section_place" name="section_place" value=""
+                                       type="text">
+                            </div>
                         </div>
-                        <label class="col-sm-2 control-label" for="section_max_pnum">최대 수강인원</label>
-                        <div class="col-sm-1">
-                            <input class="form-control" id="section_max_pnum" name="section_max_pnum" value=""
-                                   type="number">
-                        </div>
-                        <div class="col-sm-1">
-                            <span>명</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for="section_place">장소</label>
-                        <div class="col-sm-6">
-                            <input class="form-control" id="section_place" name="section_place" value="" type="text">
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <label class="col-sm-3 control-label" for="section_weekday">요일</label>
                         <div class="center-block add-buttons-container">
                             <p class="form-button btn btn-circle unselected"
@@ -116,84 +146,75 @@
                             <p class="form-button btn btn-circle unselected"
                                check_target="sunday_button">일</p>
                         </div>
-                        <input hidden type="checkbox" name="monday_button" id="monday_button">
-                        <input hidden type="checkbox" name="tuesday_button" id="tuesday_button">
-                        <input hidden type="checkbox" name="wednesday_button" id="wednesday_button">
-                        <input hidden type="checkbox" name="thursday_button" id="thursday_button">
-                        <input hidden type="checkbox" name="friday_button" id="friday_button">
-                        <input hidden type="checkbox" name="saturday_button" id="saturday_button">
-                        <input hidden type="checkbox" name="sunday_button" id="sunday_button">
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for="section_time">시간</label>
-                        <div class="col-sm-1">
-                            <div class="dropdown">
-                                <select name="section_start_time" id="section_start_time">
-                                    <script language="JavaScript">
-                                        for (var i = 0; i < 24; i++) {
-                                            if (i < 10) {
-                                                document.write('<option value="">0' + i + ':00</option>');
-                                                document.write('<option value="">0' + i + ':30</option>');
-                                            }
-                                            else {
-                                                document.write('<option value="">' + i + ':00</option>');
-                                                document.write('<option value="">' + i + ':30</option>');
-                                            }
-                                        }
-                                    </script>
-                                </select>
-                            </div>
+                        <div class="form-group">
+                            <input hidden type="checkbox" name="monday_button" id="monday_button">
                         </div>
-                        <div class="col-sm-1">
+                        <div class="form-group">
+                            <input hidden type="checkbox" name="tuesday_button" id="tuesday_button">
+                        </div>
+                        <div class="form-group">
+                            <input hidden type="checkbox" name="wednesday_button" id="wednesday_button">
+                        </div>
+                        <div class="form-group">
+                            <input hidden type="checkbox" name="thursday_button" id="thursday_button">
+                        </div>
+                        <div class="form-group">
+                            <input hidden type="checkbox" name="friday_button" id="friday_button">
+                        </div>
+                        <div class="form-group">
+                            <input hidden type="checkbox" name="saturday_button" id="saturday_button">
+                        </div>
+                        <div class="form-group">
+                            <input hidden type="checkbox" name="sunday_button" id="sunday_button">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="section_start_time">시작 시간</label>
+                            <div class="col-sm-2">
+                                <input class="form-control" id="section_start_time" name="section_start_time" value="" type="number" min="0" max="23"><span>시</span>
+                            </div>
                             <p>~</p>
                         </div>
-                        <div class="col-sm-1">
-                            <div class="dropdown">
-                                <select name="section_finish_time" id="section_finish_time">
-                                    <script language="JavaScript">
-                                        for (var i = 0; i < 24; i++) {
-                                            if (i < 10) {
-                                                document.write('<option value="">0' + i + ':00</option>');
-                                                document.write('<option value="">0' + i + ':30</option>');
-                                            }
-                                            else {
-                                                document.write('<option value="">' + i + ':00</option>');
-                                                document.write('<option value="">' + i + ':30</option>');
-                                            }
-                                        }
-                                    </script>
-                                </select>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="section_finish_time">종료 시간</label>
+                            <div class="col-sm-2">
+                                <input class="form-control" id="section_finish_time" name="section_finish_time" value="" type="number" min="0" max="23"><span>시</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label" for="section_start_date">개강일</label>
                             <div class="col-sm-6">
-                                <input class="form-control" id="section_start_date" name="section_start_date" value=""
+                                <input class="form-control" id="section_start_date" name="section_start_date"
+                                       value=""
                                        type="date">
                             </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-3 control-label" for="section_end_date">종강일</label>
                             <div class="col-sm-6">
                                 <input class="form-control" id="section_end_date" name="section_end_date" value=""
                                        type="date">
                             </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-3 control-label" for="section_deadline">신청 마감</label>
                             <div class="col-sm-6">
                                 <input class="form-control" id="section_deadline" name="section_deadline" value=""
                                        type="date">
                             </div>
                         </div>
-                    </div>
-
-
-                    <div class="form-group">
+                        <div class="form-group">
                         <div class="col-sm-12 text-center">
-                            <button class="btn btn-primary" type="submit"
-                                    id="lecture_sign_up_button">등록하기<i class="fa fa-check spaceLeft"></i>
-                            </button>
-                            <button class="btn btn-danger" type="button">취소<i class="fa fa-times spaceLeft"></i>
-                            </button>
-                        </div>
-                    </div>
+                        <button class="btn btn-primary" type="submit"
+                                id="section_sign_up_button">등록하기<i class="fa fa-check spaceLeft"></i>
+                        </button>
+                        <a class="btn btn-danger" href="/app/lecture/detail/?data={{ a.lecture_name }}">취소<i
+                                class="fa fa-times spaceLeft"></i>
+                        </a>
+                    {% endfor %}
+                {% endif %}
+
+                </div>
+                </div>
                 </form>
             </div>
         </div>

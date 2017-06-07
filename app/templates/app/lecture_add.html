@@ -23,24 +23,6 @@
     </style>
 {% endblock head %}
 {% block content %}
-    <script>
-        $(document).ready(function () {
-            $(".btn-circle").click(function () {
-                var unselected = $(this).hasClass("unselected");
-                //var type = $(this).attr("target");
-
-                var checkbox = $("#" + $(this).attr("check_target"));
-                $(checkbox).prop("checked", unselected);
-                if (unselected) {
-                    $(this).removeClass("unselected");
-                    $(this).addClass("btn-warning");
-                } else {
-                    $(this).addClass("unselected");
-                    $(this).removeClass("btn-warning");
-                }
-            });
-        });
-    </script>
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-3 col-md-2 sidebar">
@@ -104,8 +86,8 @@
                             <button class="btn btn-primary" disabled="disabled" type="submit"
                                     id="lecture_sign_up_button">등록하기<i class="fa fa-check spaceLeft"></i>
                             </button>
-                            <button class="btn btn-danger" type="button">취소<i class="fa fa-times spaceLeft"></i>
-                            </button>
+                            <a class="btn btn-danger" href="/app/lecture/all">취소<i class="fa fa-times spaceLeft"></i>
+                            </a>
                         </div>
                     </div>
                 </form>

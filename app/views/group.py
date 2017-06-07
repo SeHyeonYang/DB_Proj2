@@ -15,7 +15,9 @@ def group_home(request):
         temp_dict['date'] = group.date
         temp_dict['comments'] = group.comments
         temp_dict['category'] = group.category
+
         context = {}
+
         context['group_list'] = group_list
         print("OK1")
         if request.method == "GET":
@@ -27,6 +29,7 @@ def group_home(request):
             user_group = UserGroup.objects.create(group_id=group, user_id=request.user)
             user_group.save()
             return HttpResponse("OK")
+
 
 
 
