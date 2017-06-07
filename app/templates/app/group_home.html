@@ -2,7 +2,6 @@
 <link type="group/css" hrep="group.css" rel="stylesheet">
 
 {% block my_page %}
-
     <div class="container">
         <h2 class="page-header">내 그룹</h2>
         <div class="table-responsive" id="right">
@@ -26,7 +25,7 @@
                 </table>
         </div>
     </div>
-    </div>
+
     <div class="container">
         <h2 class="page-header">전체 그룹</h2>
         <div class="table-responsive">
@@ -59,10 +58,9 @@
                         <th>개설자</th>
                         <th>카테고리</th>
                         <th>가입하기</th>
+                    </tr>
                     </thead>
                     <tdody>
-                        </tr>
-
                         {% for group in group_list %}
                             <form class="form-horizontal" method="post" action="/app/group_home/">
                                 {% csrf_token %}
@@ -76,24 +74,19 @@
                                     <td id="group-{{ group.leader }}" name="group_leader"
                                         value="{{ group.leader }}">{{ group.leader }}</td>
                                     <td id="group-{{ group.category }}" name="category"
-                                        value="{{ group.category }}">{{ group.catergory }}</td>
+                                        value="{{ group.category }}">{{ group.category.category_name }}</td>
                                     <td>
                                         <a onclick='join_group("{{ group.group_id }}")'>가입하기</a>
                                     </td>
-                                </tr>
                             </form>
+
                         {% endfor %}
                     </tdody>
-
-
                 </table>
             </div>
-
         </div>
     </div>
-
     <div class="text-center">
         <a href="/app/group_create" button type="button" class="btn btn-default"> 그룹 개설</a>
     </div>
-
 {% endblock my_page %}

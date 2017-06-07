@@ -33,6 +33,7 @@ def group_home(request):
         temp_dict['category'] = group.category
         my_group_list.append(temp_dict)
     context['my_group_list'] = my_group_list
+
     if request.method == "GET":
         return render(request, 'app/group_home.html', context)
     else:
