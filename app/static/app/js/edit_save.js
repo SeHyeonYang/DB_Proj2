@@ -76,7 +76,7 @@ function search_friend(option, data) {
     var data_source = document.getElementById(data);
 
     $.ajax({
-        url: '/app/my_page/friend/?action=search&option=' + option + '&data=' + data_source.data + '/',
+        url: '/app/my_page/friend/?action=search&option=findbyall&data=' + data_source.value + '/',
         type: 'POST',
         data: friends,
         success: function (result) {
