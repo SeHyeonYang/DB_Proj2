@@ -69,8 +69,21 @@ def my_page(request, menu):
         context['only_you_friend'] = only_you_friend_list
         return render(request, 'app/my_page_friend.html', context)
     elif menu == "lecture":
-        return render(request, 'app/my_page_lecture.html', {})
-
+        return render(request, 'app/my_page_lecture.html', context)
+    elif menu == "take":
+        my_take = Take.objects.filter(user_id=user)
+        my_take_section_list = []
+        my_take_section = Section.objects.filter(id__in=my_take).select_related()
+        my_take_course = Course.objects.filter(id__in=my_take_section).select_related()
+        for take in my_take_section:
+            temp_dict = dict()
+            temp_dict['section_id'] = take.id
+            temp_dict['start_date'] = take.start_date
+            temp_dict['end_date'] = take.end_date
+            print(take.id)
+            my_take_section_list.append(temp_dict)
+        context['take'] = my_take_section_list
+        return render(request, 'app/my_page_take.html', context)
     elif menu == "save":
         user_name = request.POST.get("user_name")
         nickname = request.POST.get("nickname")

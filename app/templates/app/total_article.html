@@ -10,6 +10,8 @@
     <div class="container">
 
         <div class="input-group"  style="float:right">
+        <table>
+            <tr>
             <td colspan="2">
                 <button type="button" class="btn btn-default dropdown-toggle"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">검색옵션<span class="caret"></span></button>
@@ -18,53 +20,39 @@
                     <li><a href="#">작성자</a></li>
                 </ul>
             </td>
+                <td>
             <div class = "input-group-btn" >
                 <input type="text" class="form-control" placeholder="Search" width:300px; height:100px;>
                 <button type="검색" class="btn btn-default">검색</button>
             </div>
-
+                </td>
+            </tr>
+        </table>
         </div>
-        <table class ="table table-striped">
+        <table class ="table table-striped"  width="500">
             <thead>
             <tr>
-                <th>번호</th>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>작성일</th>
+                <th width="50"><center>번호</center></th>
+                <th width="300"><center>제목</center></th>
+                <th width="100"><center>작성자</center></th>
+                <th width="50"><center>작성일</center></th>
             </tr>
             </thead>
             <tbody>
             {% for article in article_list %}
                 <tr>
-                    <td>{{ article.article_id }}</td>
-                    <td>{{ article.article_title}}</td>
-                    <td>{{ article.article_user}}</td>
-                    <td>{{ article.article_date }}</td>
+                    <td><center>{{ article.id }}</center></td>
+                    <td><a href="/app/article/{{article.id}}"><center>{{article.title}}</center></a></td>
+                    <td><center>{{ article.user_id}}</center></td>
+                    <td><center>{{ article.date }}</center></td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-        <nav aria-label="...">
-            <ul class="pagination">
-                <li class="disabled">
-      <span>
-        <span aria-hidden="true">&laquo;</span>
-      </span>
-                </li>
-                <li class="active">
-                    <span>1 <span class="sr-only">(current)</span></span>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li>
-                    <a href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-        <button type="글쓰기" class="btn btn-default" style = float:right onclick="location.href = '/app/article/write/'">글쓰기</button>
+         <table>
+           <button type="글쓰기" class="btn btn-default" style = float:right onclick="location.href = '/app/article/write/'">글쓰기</button>
+        </table>
+
     </div>
     </body>
 
