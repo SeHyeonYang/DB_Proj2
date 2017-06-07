@@ -15,22 +15,19 @@ def group_home(request):
         temp_dict['date'] = group.date
         temp_dict['comments'] = group.comments
         temp_dict['category'] = group.category
-
         context = {}
-
         context['group_list'] = group_list
         print("OK1")
-        if request.method == "GET":
-            return render(request, 'app/group_home.html', context)
-        else:
-            print("OK2")
-            group_id = request.GET.get('data')[:-1]
-            group = Group.objects.filter(id=group_id).first()
-            user_group = UserGroup.objects.create(group_id=group, user_id=request.user)
-            user_group.save()
-            return HttpResponse("OK")
 
-
+    if request.method == "GET":
+        return render(request, 'app/group_home.html', context)
+    else:
+        print("OK2")
+        group_id = request.GET.get('data')[:-1]
+        group = Group.objects.filter(id=group_id).first()
+        user_group = UserGroup.objects.create(group_id=group, user_id=request.user)
+        user_group.save()
+        return HttpResponse("OK")
 
 
 def group_create(request):
