@@ -163,13 +163,12 @@ class LectureDetail(View):
             temp_dict['start_time'] = temp.start_time
             temp_dict['end_time'] = temp.end_time
             temp_dict['end_time'] = temp.end_time
-            try:
-                teacher = Teach.objects.filter(section_id=temp)[0]
-                user = User.objects.filter(user_id=teacher).first()
+            teacher = Teach.objects.filter(section_id=temp).first()
+            if teacher :
+                user = User.objects.filter(username=teacher.teacher_id.user_id).first()
                 temp_dict['teacher'] = user.username
-            except:
+            else :
                 temp_dict['teacher'] = ""
-                pass
             section_list.append(temp_dict)
 
 
