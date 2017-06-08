@@ -36,6 +36,6 @@ def teacher(request):
                     temp_dict['teacher_id'] = teach.teacher_id.user_id.username
                     temp_dict['phone_num'] = teach.teacher_id.phone_num
                     temp_dict['email_addr'] = teach.teacher_id.email_addr
-                    find_teacher_info.append(temp_dict)
+            find_teacher_info.append(temp_dict)
         context['find_teacher_info'] = find_teacher_info
     return render(request, 'app/teacher_tab.html', context)
