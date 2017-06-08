@@ -53,7 +53,7 @@ class Course(models.Model):
 
 class Section(models.Model):
     # section_id is auto serial key. 1,2,3,4,...
-    course_id = models.ForeignKey(Course)  # not cascade
+    course_id = models.ForeignKey(Course, related_name="section")  # not cascade
     start_date = models.DateField()
     end_date = models.DateField()
     times = models.IntegerField()
