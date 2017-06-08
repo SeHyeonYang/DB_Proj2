@@ -27,7 +27,8 @@
         <div class="row">
             <div class="col-sm-3 col-md-2 sidebar">
                 <ul class="nav nav-sidebar">
-                    <li style="font-weight: bold; margin-bottom: 10px;"><a href="{% url 'lecture_all' %}">- 전체 강좌</a></li>
+                    <li style="font-weight: bold; margin-bottom: 10px;"><a href="{% url 'lecture_all' %}">- 전체 강좌</a>
+                    </li>
                     {% for category in category_list %}
                         <li style="font-weight: bold; margin-bottom: 10px;" id="category-{{ category.id }}"
                             name="category-{{ category.id }}"><a href="/app/lecture/{{ category.category_name }}/">
@@ -46,9 +47,15 @@
                         <div class="col-sm-6">
                             <div class="dropdown">
                                 <select name="lecture_select" id="lecture_select">
-                                    {% for category in category_list %}
-                                        <option id="category-{{ category.id }}" name="category-{{ category.id }}"
-                                                value="{{ category.category_name }}">{{ category.category_name }}</option>
+                                    {% for cate in category_list %}
+                                        {% if category == cate.category_name %}
+                                            <option id="category-{{ cate.id }}" name="category-{{ cate.id }}"
+                                                    value="{{ cate.category_name }}"
+                                                    selected>{{ cate.category_name }}</option>
+                                        {% else %}
+                                            <option id="category-{{ cate.id }}" name="category-{{ cate.id }}"
+                                                    value="{{ cate.category_name }}">{{ cate.category_name }}</option>
+                                        {% endif %}
                                     {% endfor %}
                                 </select>
                             </div>

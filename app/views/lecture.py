@@ -30,16 +30,52 @@ class LectureAll(View):
         return render(request, 'app/lecture_all.html', context)
 
     def post(self, request):
+        data = request.POST
+        if (data['option'] == 'search') :
+            category_list = Category.objects.all()
+            course_list = list()
+            temp_course_list = Course.objects.filter(title__contains=data['search']).all()
+            for course in temp_course_list:
+                temp_dict = dict()
+                temp_dict['lecture_name'] = course.title
+                for category in category_list:
+                    if course.category_id.id == category.id:
+                        temp_dict['lecture_cate'] = category.category_name
+                        break
+                course_list.append(temp_dict)
 
-        return HttpResponseRedirect('/app/lecture/add/')
+            flag = Teacher.objects.filter(user_id=request.user).count()
+            context = {}
+            context['category_list'] = category_list
+            context['course_list'] = course_list
+            context['is_teacher'] = flag
+            return render(request, 'app/lecture_all.html', context)
+        elif (data['option'] == 'lecture_add') :
+            return HttpResponseRedirect('/app/lecture/add/')
+        else :
+            return HttpResponse("ERROR : 잘못된 입력입니다.")
+
 
 def lecture_category(request, category):
     category_list = Category.objects.all()
     category_qs = Category.objects.filter(category_name=category)[0]
     print(category_qs.category_name)
-    courses = Course.objects.filter(category_id=category_qs).all()
-    print(courses.count())
     course_list = list()
+
+    if request.method == "POST":
+        data = request.POST
+        if (data['option'] == 'search'):
+            courses = Course.objects.filter(category_id=category_qs, title__contains=data['search']).all()
+        elif (data['option'] == 'lecture_add'):
+            context = {}
+            context['category'] = category
+            return HttpResponseRedirect('/app/lecture/add/?data=' + category)
+        else:
+            HttpResponse("잘못된 입력입니다.")
+    else :
+        courses = Course.objects.filter(category_id=category_qs).all()
+
+    print(courses.count())
     for course in courses:
         temp_dict = dict()
         temp_dict['title'] = course.title
@@ -56,6 +92,7 @@ def lecture_category(request, category):
 
 class LectureAdd(View):  # 강좌 개설
     def get(self, request):
+        data = request.GET
         category_list = Category.objects.all()
         for category in category_list:
             temp_dict = dict()
@@ -63,6 +100,10 @@ class LectureAdd(View):  # 강좌 개설
             temp_dict['category_name'] = category.category_name
         context = {}
         context['category_list'] = category_list
+        if data :
+            context['category'] = data['data']
+        else :
+            context['category'] = "all"
         return render(request, 'app/lecture_add.html', context)
 
     @csrf_exempt
