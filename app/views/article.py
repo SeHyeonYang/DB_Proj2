@@ -52,7 +52,21 @@ def article(request, option):
             context['article_list'] = article_list
             return render(request, 'app/total_article.html', context)
 
+    elif option == "delete":
+        user_id = request.GET.get('user')
+        article_id = request.GET.get('article')[:-1]
+        temp = str(user_id)+"/"+str(article_id)
+        print(str(temp))
+        this_article = Article.objects.filter(id=article_id).first()
+        if this_article.user_id == request.user:
+            print("OK")
+            Article.objects.filter(id=article_id).delete()
+            return HttpResponse("OK")
+        else:
+            print("FAIL")
+
     elif option == 'write':
+
         if request.method == "GET":
             category_list = Category.objects.all()
             for category in category_list:
@@ -85,11 +99,14 @@ def info_article(request, pk):
         d_id = pk
         Article.objects.filter(id=pk).delete()
 
-        category_list = Category.objects.all()
-        for category in category_list:
+        article_list = Article.objects.all()
+        for article in article_list:
             temp_dict = dict()
-            temp_dict['category_id'] = category.id
-            temp_dict['category_name'] = category.category_name
+            temp_dict['article_id'] = article.id
+            temp_dict['article_user'] = article.user_id
+            temp_dict['article_title'] = article.title
+            temp_dict['article_date'] = article.date
         context = {}
-        context['category_list'] = category_list
-        return render(request, 'app/info_article.html', context)
+        context['article_list'] = article_list
+
+        return render(request, 'app/total_article.html', context)
