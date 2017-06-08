@@ -35,7 +35,7 @@
 
                     {%  for member in member_list %}
                     <tr>
-                        <td> {{ member.member_id}}</td>
+                        <td><a href='/app/my_page/take/?friend={{ member.member_id }}/'>{{ member.member_id}}</a></td>
                         <td><a id="make-friend-relation-{{ member.member_id }}"
                                    onclick='make_friend_relationship("{{ member.member_id }}")'>신청하기</a></td>
                     </tr>

@@ -183,3 +183,21 @@ function delete_section(username, section_id) {
         }
     });
 }
+
+function show_friend_take(friend_id) {
+  $.ajaxSetup({
+        headers: {"X-CSRFToken": get_cookie("csrftoken")}
+    });
+
+    $.ajax({
+        url: '/app/my_page/take/?friend=' + friend_id + '/',
+        type: 'POST',
+        success: function (result) {
+            location.href = '/app/my_page/take/?friend=' + friend_id + '/'
+        },
+        error: function (error) {
+            alert("권한이 없어 볼 수 없습니다.");
+        }
+    });
+
+}

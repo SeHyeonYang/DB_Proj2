@@ -1,0 +1,31 @@
+{% extends 'app/my_page.html' %}
+{% block my_page %}
+    <div class="container">
+        {% if take %}
+            <div class="page-header">
+                <h3>{{ friend_id }}가 수강한 강좌</h3>
+            </div>
+          <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>강좌명</th>
+                        <th>섹션번호</th>
+                        <th>시작일</th>
+                        <th>종료일</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for element in take %}
+                        <tr>
+                            <td>{{ element.course_title }}</td>
+                            <td>{{ element.section_id }}</td>
+                            <td>{{ element.start_date }}</td>
+                            <td>{{ element.end_date }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+        {% endif %}
+    </div>
+
+{% endblock %}
