@@ -11,7 +11,7 @@ import json
 
 #@user_passes_test(login_required, login_url='/app/sign_in/')
 def welcome(request):
-    return render(request, 'app/course_list.html', {})
+    return HttpResponseRedirect('/app/lecture/all/')
 
 
 def sign_in(request):
@@ -49,11 +49,11 @@ class SignUp(View):  # 회원가입
         data = request.POST
         user_id = data['user-input-id']
         password = data['password']
-        user_name = data['name']
-        nickname = data['nickname']
+        last_name = data['name']
+        first_name = data['nickname']
 
-        _user = User.objects.create(username=user_id, password=password, first_name=nickname, last_name= user_name)
-        app_user = AppUser.objects.create(user=_user, name=user_name, nickname=nickname)
+        _user = User.objects.create(username=user_id, password=password, first_name=first_name, last_name= last_name)
+        #app_user = AppUser.objects.create(user=_user, name=user_name, nickname=nickname)
 
         if request.POST.get("chk_info") == "강사":
             phone_num = data['phone_num']
@@ -67,7 +67,7 @@ class SignUp(View):  # 회원가입
                     cate.save()
             teacher.save()
         _user.save()
-        app_user.save()
+        #app_user.save()
         return HttpResponseRedirect('/app/sign_in/')
 
 

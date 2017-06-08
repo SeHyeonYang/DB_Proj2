@@ -5,24 +5,24 @@
     <div class="container">
         <h2 class="page-header">내 그룹</h2>
         <div class="table-responsive" id="right">
-             <table class="table table-striped">
-                    <thead>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>그룹명</th>
+                    <th>최신글</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for group in my_group_list %}
                     <tr>
-                        <th>번호</th>
-                        <th>그룹명</th>
-                        <th>최신글</th>
+                        <td> <a href="/app/group_private/{{group.group_id}}/totoal/">{{group.group_id}}</a></td>
+                        <td> {{group.group_name}}</td>
+                        <td><a href="/app/article/{{group.article_id}}">{{group.article_title}}</a></td>
                     </tr>
-                    </thead>
-                    <tbody>
-                    {% for group in my_group_list %}
-                        <tr>
-                            <td>{{ group.group_id }}</td>
-                            <td>{{ group.group_name }}</td>
-                            <td>최신글이 없습니다.</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -32,20 +32,20 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="input-group">
-                        <div class="input-group-btn" ng-controller="DropdownCtrl" dropdown is-open="status.isopen">
-                            <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle
-                                    data-toggle="dropdown" aria-expanded="false" ng-disabled="disabled" id="button">검색
-                                <span class="caret"></span></button>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">전체</a></li>
-                                <li><a href="#">그룹 이름</a></li>
-                                <li><a href="#">개설자</a></li>
-                                <li><a href="#">카테고리</a></li>
-                            </ul>
+                        <div >
+                            <select name="job" style="height: 20px" , id="select_box">
+                                    <option value="전체" selected="selected">전체</option>
+                                    <option value="그룹명">그룹명</option>
+                                    <option value="개설자">개설자</option>
+                                    <option value="카테고리">카테고리</option>
+                            </select>
+                            <script>
+                            $("#select_box > option:selected").text();
+                            </script>
                         </div><!-- /btn-group -->
                         <input type="text" class="form-control" placeholder="검색어를 입력해 주세요"
-                               aria-describedby="basic-addon2">
-                        <span class="input-group-addon" id="basic-addon2">검색</span>
+                               name = "search_content"aria-describedby="basic-addon2">
+                        <span class="input-group-addon" id="basic-addon2"  type="submit">검색</span>
                     </div><!-- /input-group -->
                 </div><!-- /.col-lg-6 -->
             </div>
@@ -65,10 +65,9 @@
                             <form class="form-horizontal" method="post" action="/app/group_home/">
                                 {% csrf_token %}
                                 <tr>
-                                    <td id="group-{{ group.group_id }}" name="group_id-{{ group.group_id }}"
-                                        value="{{ group.group_id }}">{{ group.group_id }}</td>
-                                    <td id="group-{{ group.group_name }}" name="group_name"
-                                        value="{{ group.group_name }}">{{ group.group_name }}</td>
+                                    <td>{{group.group_id}}</td>
+                                    <td id="group-{{ group.group_name }}" name="group_name-{{ group.group_name }}"
+                                        value="{{ group.group_name }}">{{ group.group_name }} </td>
                                     <input id="group_hidden_id" name="group_hidden_id" value="{{ group.group_id }}"
                                            type="hidden">
                                     <td id="group-{{ group.leader }}" name="group_leader"
