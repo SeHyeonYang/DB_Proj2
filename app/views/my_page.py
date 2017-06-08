@@ -19,21 +19,35 @@ def my_page(request, menu):
         teacher = Teacher.objects.filter(user_id=user.id).first()
         times = Teach.objects.filter(teacher_id=teacher).count()
         print(times)
+
         student_count = Take.objects.filter(section_id__teach__teacher_id=teacher).count()
         print(student_count)
-        students = Take.objects.filter(section_id__teach__teacher_id=teacher).values('user_id').distinct()
-        print(students.all())
+
+        students = Take.objects.filter(section_id__teach__teacher_id=teacher).values('user_id__username').distinct()
         students_list = []
         for s in students:
-            print(s)
-            students_list.append(s.user_id)
+            students_list.append(s['user_id__username'])
         print(students_list)
-        top_person = Take.objects.filter(section_id__teach__teacher_id=teacher).values('user_id').annotate(user_take_count=Count('user_id')).order_by('-user_take_count')
-        print(top_person.query)
+
+        top_people_list = []
+        top_people = Take.objects.filter(section_id__teach__teacher_id=teacher).values('user_id__username').annotate(user_take_count=Count('user_id')).order_by('-user_take_count')
+        for p in top_people:
+            temp_dict = dict()
+            temp_dict['username'] = p['user_id__username']
+            temp_dict['count'] = p['user_take_count']
+            top_people_list.append(temp_dict)
+
 
 
         temp = str(times) + "/" + str(student_count)
         print(str(temp))
+
+        context = {}
+        context['times'] = times
+        context['student_count'] = student_count
+        context['students_list'] = students_list
+        context['top_person'] = top_people_list[0]
+        context['top_people_list'] = top_people_list
         return render(request, 'app/my_page_stati.html', context)
     elif menu == "history":
         print("history")
