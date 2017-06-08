@@ -16,9 +16,9 @@
                 <tbody>
                 {% for group in my_group_list %}
                     <tr>
-                        <td> <a href="/app/group_private/{{group.group_id}}/totoal/">{{group.group_id}}</a></td>
-                        <td> {{group.group_name}}</td>
-                        <td><a href="/app/article/{{group.article_id}}">{{group.article_title}}</a></td>
+                        <td><a href="/app/group_private/{{ group.group_id }}/totoal/">{{ group.group_id }}</a></td>
+                        <td> {{ group.group_name }}</td>
+                        <td><a href="/app/article/{{ group.article_id }}">{{ group.article_title }}</a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -31,22 +31,31 @@
         <div class="table-responsive">
             <div class="row">
                 <div class="col-lg-6">
-                    <div class="input-group">
-                        <div >
-                            <select name="job" style="height: 20px" , id="select_box">
-                                    <option value="전체" selected="selected">전체</option>
-                                    <option value="그룹명">그룹명</option>
-                                    <option value="개설자">개설자</option>
-                                    <option value="카테고리">카테고리</option>
-                            </select>
-                            <script>
-                            $("#select_box > option:selected").text();
-                            </script>
-                        </div><!-- /btn-group -->
-                        <input type="text" class="form-control" placeholder="검색어를 입력해 주세요"
-                               name = "search_content"aria-describedby="basic-addon2">
-                        <span class="input-group-addon" id="basic-addon2"  type="submit">검색</span>
-                    </div><!-- /input-group -->
+                    <form class="form-horizontal" method="post" action="/app/group_home/">
+                        {% csrf_token %}
+                        <div class="input-group" style="float:right">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <select name='option' style="width:100px;height:30px;">
+                                            <option value='' selected>선택</option>
+                                            <option value='title'>그룹명</option>
+                                            <option value='user'>개설자</option>
+                                            <option value='category'>카테고리</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <div class="input-group-btn">
+                                            <input type="text" class="form-control" name="search" placeholder="Search"
+                                                   width:300px; height:100px;>
+                                            <input hidden type="text" value="search">
+                                            <button type="submit" class="btn btn-default">검색</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </form>
                 </div><!-- /.col-lg-6 -->
             </div>
             <div class="table-responsive">
@@ -65,7 +74,8 @@
                             <form class="form-horizontal" method="post" action="/app/group_home/">
                                 {% csrf_token %}
                                 <tr>
-                                    <td>{{group.group_id}}</td>
+                                    <input hidden type="text" name="eonji" value="sub">
+                                    <td>{{ group.group_id }}</td>
                                     <td id="group-{{ group.group_name }}" name="group_name-{{ group.group_name }}"
                                         value="{{ group.group_name }}">{{ group.group_name }} </td>
                                     <input id="group_hidden_id" name="group_hidden_id" value="{{ group.group_id }}"

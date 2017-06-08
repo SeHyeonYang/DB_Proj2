@@ -4,21 +4,16 @@ from django.http import HttpResponseRedirect, HttpResponse
 from app.models import *
 import time
 import json
-
+from django.db.models import Q
 
 def group_home(request):
     _group_list = Group.objects.all()
     group_list = []
     article_list =[]
+
     for group in _group_list:
         temp = GroupArticle.objects.filter(group_id=group).count()
         temp_dict = dict()
-        #print(temp)
-        #.__getattribute__('article_id')
-
-
-        #print(_garticle.article_id.title)
-
         temp_dict['group_id'] = group.id
         temp_dict['group_name'] = group.group_name
         temp_dict['leader'] = group.leader
@@ -51,13 +46,71 @@ def group_home(request):
 
     if request.method == "GET":
         return render(request, 'app/group_home.html', context)
+
     else:
-        print("OK2")
-        group_id = request.GET.get('data')[:-1]
-        group = Group.objects.filter(id=group_id).first()
-        user_group = UserGroup.objects.create(group_id=group, user_id=request.user)
-        user_group.save()
-        return HttpResponse("OK")
+        post_group_list =[]
+        if request.method == "POST":
+            data = request.POST
+
+            if request.GET.get('option') == 'join':
+                print("OK2")
+                group_id = request.GET.get('data')[:-1]
+                group = Group.objects.filter(id=group_id).first()
+                user_group = UserGroup.objects.create(group_id=group, user_id=request.user)
+                user_group.save()
+                return HttpResponse("OK")
+
+            else :
+                data = request.POST
+                text = data['search']
+                option = data.get('option', None)
+                if option == 'title':
+                    _group_list = Group.objects.filter(group_name__contains=text)
+
+                elif option == 'user':
+                    user_list = User.objects.filter(Q(username__contains=text))
+                    _group_list = Group.objects.filter(leader__in=user_list)
+
+                elif option == 'category':
+                    category_list = Category.objects.filter(category_name__contains=text)
+                    _group_list = Group.objects.filter(category__in = category_list)
+
+                else:
+                    _group_list = Group.objects.all()
+
+                for group in _group_list:
+                    # temp = GroupArticle.objects.filter(group_id=group).count()
+                    temp_dict = dict()
+                    temp_dict['group_id'] = group.id
+                    temp_dict['group_name'] = group.group_name
+                    temp_dict['leader'] = group.leader
+                    temp_dict['date'] = group.date
+                    temp_dict['comments'] = group.comments
+                    temp_dict['category'] = group.category
+                    post_group_list.append(temp_dict)
+                context = {}
+                context['group_list'] = post_group_list
+                _my_group_list = Group.objects.filter(usergroup__user_id=request.user)
+                my_group_list = []
+
+                for group in _my_group_list:
+                    temp_dict = dict()
+                    temp_dict['group_id'] = group.id
+                    temp_dict['group_name'] = group.group_name
+                    temp_dict['leader'] = group.leader
+                    temp_dict['date'] = group.date
+                    temp_dict['comments'] = group.comments
+                    temp_dict['category'] = group.category
+                    try:
+                        _garticle = GroupArticle.objects.filter(group_id=group).last()
+                        _article = _garticle.article_id
+                        temp_dict['article_id'] = str(_article.id)
+                        temp_dict['article_title'] = str(_article.title)
+                    except:
+                        pass
+                    my_group_list.append(temp_dict)
+                context['my_group_list'] = my_group_list
+                return render(request, 'app/group_home.html', context)
 
 
 def group_create(request):

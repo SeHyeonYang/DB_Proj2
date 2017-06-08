@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 from .authentify import *
 from django.http import HttpResponseRedirect, HttpResponse
+from django.db.models import F
 
 
 def my_page(request, menu):
@@ -12,6 +13,44 @@ def my_page(request, menu):
     context['is_teacher'] = is_teacher(user)
     if menu == "info":
         return render(request, 'app/my_page_info.html', context)
+    elif menu == "history":
+        print("history")
+        user = request.user
+        section_history = Section.objects.filter(teach__teacher_id__user_id=user, end_date__lte=datetime.today())
+        print(section_history.query)
+        section_list = []
+        for section in section_history:
+            temp_dict = dict()
+            temp_dict['course_title'] = section.course_id.title
+            temp_dict['section_id'] = section.id
+            temp_dict['start_date'] = section.start_date
+            temp_dict['end_date'] = section.end_date
+            temp_dict['times'] = section.times
+            temp_dict['price'] = section.price
+            temp_dict['start_time'] = section.start_time
+            temp_dict['end_time'] = section.end_time
+            temp_dict['location'] = section.location
+            section_list.append(temp_dict)
+        context['section_history_list'] = section_list
+        return render(request, 'app/my_page_course_history.html', context)
+    elif menu == "ongoing":
+        user = request.user
+        section_ongoing = Section.objects.filter(teach__teacher_id__user_id=user, end_date__gte=datetime.today())
+        section_list = []
+        for section in section_ongoing:
+            temp_dict = dict()
+            temp_dict['course_title'] = section.course_id.title
+            temp_dict['section_id'] = section.id
+            temp_dict['start_date'] = section.start_date
+            temp_dict['end_date'] = section.end_date
+            temp_dict['times'] = section.times
+            temp_dict['price'] = section.price
+            temp_dict['start_time'] = section.start_time
+            temp_dict['end_time'] = section.end_time
+            temp_dict['location'] = section.location
+            section_list.append(temp_dict)
+        context['section_ongoing_list'] = section_list
+        return render(request, 'app/my_page_section_ongoing.html', context)
     elif menu == "friend":
         if request.method == "POST":
             action = request.GET.get('action')
@@ -79,7 +118,7 @@ def my_page(request, menu):
         context['only_you_friend'] = only_you_friend_list
         return render(request, 'app/my_page_friend.html', context)
     elif menu == "lecture":
-        return render(request, 'app/my_page_lecture.html', context)
+        return render(request, 'app/my_page_course_history.html', context)
     elif menu == "take":
         my_take = Take.objects.filter(user_id=user).all()
         my_take_section_list = []

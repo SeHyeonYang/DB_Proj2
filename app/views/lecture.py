@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponseRedirect, HttpResponse
 from app.models import *
+from django.db.models import F
 
 import json
 
@@ -136,6 +137,7 @@ class LectureDetail(View):
         data_list.append(data)
 
         section_list = list()
+
         temp_section_list = Section.objects.filter(course_id=course).all().order_by('due_date')
         for temp in temp_section_list:
             user_count = Take.objects.filter(section_id=temp).count()

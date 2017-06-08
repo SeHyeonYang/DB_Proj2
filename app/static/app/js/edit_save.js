@@ -115,7 +115,7 @@ function join_group(group_id) {
     });
 
     $.ajax({
-        url: '/app/group_home/?data=' + group_id + '/',
+        url: '/app/group_home/?option=join&data=' + group_id + '/',
         type: 'POST',
         data: group_id,
         success: function (result) {
@@ -146,4 +146,23 @@ function friend_approve(friend_id) {
             alert("실패했습니다.");
         }
     });
+}
+
+function delete_article(user_id, article_id) {
+    $.ajaxSetup({
+        headers: {"X-CSRFToken": get_cookie("csrftoken")}
+    });
+
+    $.ajax({
+        url: '/app/article/delete/?user=' + user_id + '&article='+article_id+'/',
+        type: 'POST',
+        success: function (result) {
+            alert("게시물을 삭제합니다.");
+            location.href = '/app/article/total/'
+        },
+        error: function (error) {
+            alert("권한이 없어 지울 수 없습니다.");
+        }
+    });
+
 }
