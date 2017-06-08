@@ -22,12 +22,12 @@
         }
     </style>
     <script type="text/javascript">
-         <!--
-            function Info() {
-               alert ("강좌에 수강을 신청하셨습니다.");
-            }
-         //-->
-      </script>
+        <!--
+        function Info() {
+            alert("강좌에 수강을 신청하셨습니다.");
+        }
+        //-->
+    </script>
 {% endblock head %}
 {% block content %}
 
@@ -75,30 +75,31 @@
                         <div class="page-header">
                             <h3>분기강좌</h3>
                         </div>
-                        <form class="form-horizontal" method="post"
-                              action="/app/lecture/detail/?data={{ a.lecture_name }}">
-                            {% csrf_token %}
-                            <div class="table-responsive" id="lecture_list">
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th>강사명</th>
-                                        <th>개강일</th>
-                                        <th>종강일</th>
-                                        <th>장소</th>
-                                        <th>수강금액</th>
-                                        <th>빈도</th>
-                                        <th>시작시간</th>
-                                        <th>종료시간</th>
-                                        <th>최소인원</th>
-                                        <th>최대인원</th>
-                                        <th>현재인원</th>
-                                        <th>마감일</th>
-                                        <th>상태</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for section in section_list %}
+
+                        <div class="table-responsive" id="lecture_list">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>강사명</th>
+                                    <th>개강일</th>
+                                    <th>종강일</th>
+                                    <th>장소</th>
+                                    <th>수강금액</th>
+                                    <th>빈도</th>
+                                    <th>시작시간</th>
+                                    <th>종료시간</th>
+                                    <th>최소인원</th>
+                                    <th>최대인원</th>
+                                    <th>현재인원</th>
+                                    <th>마감일</th>
+                                    <th>상태</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for section in section_list %}
+                                    <form class="form-horizontal" method="post"
+                                          action="/app/lecture/detail/?data={{ a.lecture_name }}">
+                                        {% csrf_token %}
                                         <tr>
                                             <td>{{ section.teacher }}</td>
                                             <td>{{ section.start_date }}</td>
@@ -149,7 +150,7 @@
                                                             document.write('<td>마감</td>');
                                                         }
                                                     }
-                                                    else if(Number(due_date_array[0]) > Number(month)) {
+                                                    else if (Number(due_date_array[0]) > Number(month)) {
                                                         document.write('<td><button class="btn btn-warning" type="submit" onclick="Info();">신청</button></td>');
                                                         document.write('<div class="form-group">');
                                                         document.write('<input hidden type="text" name="section_enroll" id="section_enroll" value="{{ section.section_id }}">');
@@ -160,7 +161,7 @@
                                                         document.write('<td>마감</td>');
                                                     }
                                                 }
-                                                else if(Number(due_date_array[2]) > Number(year)) {
+                                                else if (Number(due_date_array[2]) > Number(year)) {
                                                     document.write('<td><button class="btn btn-warning" type="submit" onclick="Info();">신청</button></td>');
                                                     document.write('<div class="form-group">');
                                                     document.write('<input hidden type="text" name="section_enroll" id="section_enroll" value="{{ section.section_id }}">');
@@ -173,11 +174,11 @@
 
                                             </script>
                                         </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </form>
+                                    </form>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     {% endif %}
                 {% endfor %}
             </div>
