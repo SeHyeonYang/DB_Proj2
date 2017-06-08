@@ -31,6 +31,7 @@ class Teacher(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     phone_num = models.CharField(max_length=45)
     email_addr = models.EmailField()
+    level = models.IntegerField(default=1)
 
 
 class Category(models.Model):
@@ -115,3 +116,9 @@ class UserGroup(models.Model):
 class GroupArticle(models.Model):
     article_id = models.ForeignKey(Article)
     group_id = models.ForeignKey(Group)
+
+
+class Level(models.Model):
+    level = models.IntegerField(primary_key=True)
+    times = models.IntegerField(default=0)
+    students = models.IntegerField(default=0)
