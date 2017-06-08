@@ -8,6 +8,7 @@
             <div class="page-header">
                 <h3>내 강좌 수</h3>
             </div>
+            <p>{{ times }}</p>
         </div>
     </div>
      <div>
@@ -15,9 +16,15 @@
             <div class="page-header">
                 <h3>내 강좌를 수강한 사람들의 수</h3>
             </div>
+            <p>{{ student_count }}</p>
+        </div>
+         <div>
              <div class="page-header">
                 <h3>내 강좌를 수강한 사람들</h3>
             </div>
+             {% for s in students_list %}
+                <p>{{ s }}</p>
+             {% endfor %}
         </div>
     </div>
      <div>
@@ -25,9 +32,15 @@
             <div class="page-header">
                 <h3>나의 강좌를 가장 많이 들은 사람</h3>
             </div>
+            <p>{{ top_person.username }} - {{ top_person.count }}개</p>
+        </div>
+         <div>
               <div class="page-header">
                 <h3>나의 강좌를 가장 많이 들은 top 3</h3>
             </div>
+             {% for p in top_people_list %}
+                <p>{{ p.username }} - {{ p.count }}개</p>
+             {% endfor %}
         </div>
     </div>
 {% endblock %}
