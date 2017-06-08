@@ -161,7 +161,7 @@ function delete_article(user_id, article_id) {
             location.href = '/app/article/total/'
         },
         error: function (error) {
-            alert("지울 수 없습니다.");
+            alert("권한이 없어 지울 수 없습니다.");
         }
     });
 

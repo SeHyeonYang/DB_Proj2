@@ -55,16 +55,12 @@ def article(request, option):
     elif option == "delete":
         user_id = request.GET.get('user')
         article_id = request.GET.get('article')[:-1]
-        temp = str(user_id)+"/"+str(article_id)
-        print(str(temp))
+
         this_article = Article.objects.filter(id=article_id).first()
         if this_article.user_id == request.user:
-            print("OK")
             Article.objects.filter(id=article_id).delete()
             return HttpResponse("OK")
-        else:
-            print("FAIL")
-
+        
     elif option == 'write':
 
         if request.method == "GET":
@@ -91,22 +87,5 @@ def article(request, option):
 
 def info_article(request, pk):
     context = Article.objects.get(id=pk)
-    if request.method == "GET":
-        return render(request, 'app/info_article.html', {'article': context, })
+    return render(request, 'app/info_article.html', {'article': context, })
 
-    else:
-
-        d_id = pk
-        Article.objects.filter(id=pk).delete()
-
-        article_list = Article.objects.all()
-        for article in article_list:
-            temp_dict = dict()
-            temp_dict['article_id'] = article.id
-            temp_dict['article_user'] = article.user_id
-            temp_dict['article_title'] = article.title
-            temp_dict['article_date'] = article.date
-        context = {}
-        context['article_list'] = article_list
-
-        return render(request, 'app/total_article.html', context)
