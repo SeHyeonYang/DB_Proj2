@@ -51,39 +51,3 @@ function get_cookie(name) {
 function lecture_detail(title) {
     location.href = "/app/lecture/detail/?data" + title;
 }
-
-function getConfrimation(teacher) {
-    var comment = confirm(teacher + "의 분기강좌를 수강하시겠습니까?");
-    console.log(lecture_id);
-
-    if(comment == true) {
-        $.ajaxSetup({
-        headers: {"X-CSRFToken": get_cookie("csrftoken")}
-    });
-
-    $.ajax({
-        url: '/app/lecture_check/?data=' + lecture_id + '/',
-        type: 'POST',
-        success: function (result) {
-            var dict = JSON.parse(result);
-            if (dict['distinct_check'] == 0) {
-                alert("개설할 수 있는 강좌입니다.");
-                $("#lecture_sign_up_button").attr('disabled', false);
-            }
-            else {
-                alert("이미 개설된 강좌입니다.");
-            }
-
-        },
-        fail: function (result) {
-            alert("fail");
-        }
-    });
-    return true;
-    }
-    else {
-        return false;
-    }
-
-
-}
