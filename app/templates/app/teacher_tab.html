@@ -1,0 +1,79 @@
+{% extends 'app/menu_bar.html' %}
+{% block content %}
+    <article class="container">
+        <div class="col-md-12">
+            <div class="page-header">
+                <h1>강사</h1>
+            </div>
+
+            <div class="container">
+                {% if teachers %}
+
+                    <div class="col-sm-8">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>phone_num</th>
+                                <th>email_addr</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for teacher in teachers %}
+                                <tr>
+                                    <td>{{ teacher.teacher_id }}</td>
+                                    <td>{{ teacher.phone_num }}</td>
+                                    <td>{{ teacher.email_addr }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="page-header">
+            <h1>강사 찾기</h1>
+        </div>
+        <div class="container">
+            <form class="col-sm-8 form-horizontal" method="post" action="/app/teacher/">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="search-teacher">강좌로 찾기</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" id="search-teacher-by-course" name="search-teacher-by-course"
+                               value=""
+                               type="text">
+                    </div>
+                    <button id="search-button" class="btn btn-success" type="submit">찾기</button>
+                </div>
+            </form>
+            <div>
+                {% if find_teacher_info %}
+                    <div class="col-sm-8">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>강좌명</th>
+                                <th>ID</th>
+                                <th>phone_num</th>
+                                <th>email_addr</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for teacher in find_teacher_info %}
+                                <tr>
+                                    <td>{{ teacher.course }}</td>
+                                    <td>{{ teacher.teacher_id }}</td>
+                                    <td>{{ teacher.phone_num }}</td>
+                                    <td>{{ teacher.email_addr }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </article>
+{% endblock %}

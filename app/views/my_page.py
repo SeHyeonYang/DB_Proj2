@@ -85,24 +85,26 @@ def my_page(request, menu):
                 if option == "findbyall":
                     data = request.POST.get("search-friend-by-all")
                     friend_search_list = User.objects.filter(Q(username=data) | Q(first_name=data) | Q(last_name=data))
-                    search_list = []
-                    for a in friend_search_list:
-                        temp_dict = dict()
-                        temp_dict['friend_search_id'] = a.username
-                        temp_dict['friend_search_name'] = a.last_name
-                        temp_dict['friend_search_nickname'] = a.first_name
-                        search_list.append(temp_dict)
-                    context['friend_search_list'] = search_list
+                    if friend_search_list.count() != 0:
+                        search_list = []
+                        for a in friend_search_list:
+                            temp_dict = dict()
+                            temp_dict['friend_search_id'] = a.username
+                            temp_dict['friend_search_name'] = a.last_name
+                            temp_dict['friend_search_nickname'] = a.first_name
+                            search_list.append(temp_dict)
+                        context['friend_search_list'] = search_list
                     maybe_friend_search_list = User.objects.filter(
                         Q(username__contains=data) | Q(first_name__contains=data) | Q(last_name__contains=data))
-                    search_list_sub = []
-                    for a in maybe_friend_search_list:
-                        temp_dict = dict()
-                        temp_dict['friend_search_id'] = a.username
-                        temp_dict['friend_search_name'] = a.last_name
-                        temp_dict['friend_search_nickname'] = a.first_name
-                        search_list_sub.append(temp_dict)
-                    context['friend_search_list_sub'] = search_list_sub
+                    if maybe_friend_search_list.count() != 0:
+                        search_list_sub = []
+                        for a in maybe_friend_search_list:
+                            temp_dict = dict()
+                            temp_dict['friend_search_id'] = a.username
+                            temp_dict['friend_search_name'] = a.last_name
+                            temp_dict['friend_search_nickname'] = a.first_name
+                            search_list_sub.append(temp_dict)
+                        context['friend_search_list_sub'] = search_list_sub
             elif action == "befriend":
                 friend_id = request.GET.get('data')[:-1]
                 friend = User.objects.filter(username=friend_id).exclude(username=request.user).first()
