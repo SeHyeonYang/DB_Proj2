@@ -17,8 +17,7 @@
     </head>
     <body>
     <div class="container">
-        <form class="form-horizontal" method="post" action="/app/article/{{ article.id }}/">
-            {% csrf_token %}
+        <form class="form-horizontal">
             <table class="table table-responsive" align="center" width="300">
 
                 <tbody>
@@ -27,6 +26,7 @@
                         <th width="250"> <center> 게시번호 </center> </th>
                         <label name="id"><td>{{ article.id }}</td></label>
                     </tr>
+
                     <tr>
                         <th width="250"> <center> 제목 </center> </th>
                         <label name="title"><td>{{ article.title }} </td></label>
@@ -51,7 +51,7 @@
                     <tr>
 
                         <td></td>
-                        <td align="right"> <button class="btn btn-default" type="submit">삭제</button>
+                        <td align="right"> <a class="btn btn-default" onclick='delete_article("{{ article.user_id }}","{{ article.id }}")'>삭제</a>
                             <button class="btn btn-default" type="button" onclick="location.href = '/app/article/total/'">목록</button></td>
 
                         </td>

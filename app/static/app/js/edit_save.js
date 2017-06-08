@@ -147,3 +147,22 @@ function friend_approve(friend_id) {
         }
     });
 }
+
+function delete_article(user_id, article_id) {
+    $.ajaxSetup({
+        headers: {"X-CSRFToken": get_cookie("csrftoken")}
+    });
+
+    $.ajax({
+        url: '/app/article/delete/?user=' + user_id + '&article='+article_id+'/',
+        type: 'POST',
+        success: function (result) {
+            alert("게시물을 삭제합니다.");
+            location.href = '/app/article/total/'
+        },
+        error: function (error) {
+            alert("권한이 없어 지울 수 없습니다.");
+        }
+    });
+
+}
