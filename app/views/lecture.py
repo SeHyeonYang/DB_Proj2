@@ -1,12 +1,15 @@
 from django.shortcuts import render
+from django.utils.decorators import method_decorator
 from django.views.generic import View
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponseRedirect, HttpResponse
 from app.models import *
 from django.db.models import F
-
+from .authentify import *
 import json
+from django.contrib.auth.decorators import user_passes_test
+
 
 class LectureAll(View):
     def get(self, request):
@@ -21,11 +24,12 @@ class LectureAll(View):
                     temp_dict['lecture_cate'] = category.category_name
                     break
             course_list.append(temp_dict)
-
-        flag = Teacher.objects.filter(user_id=request.user).count()
         context = {}
         context['category_list'] = category_list
         context['course_list'] = course_list
+        if request.user.is_anonymous():
+            return render(request, 'app/lecture_all.html', context)
+        flag = Teacher.objects.filter(user_id=request.user).count()
         context['is_teacher'] = flag
         return render(request, 'app/lecture_all.html', context)
 
@@ -43,11 +47,12 @@ class LectureAll(View):
                         temp_dict['lecture_cate'] = category.category_name
                         break
                 course_list.append(temp_dict)
-
-            flag = Teacher.objects.filter(user_id=request.user).count()
             context = {}
             context['category_list'] = category_list
             context['course_list'] = course_list
+            if request.user.is_anonymous():
+                return render(request, 'app/lecture_all.html', context)
+            flag = Teacher.objects.filter(user_id=request.user).count()
             context['is_teacher'] = flag
             return render(request, 'app/lecture_all.html', context)
         elif (data['option'] == 'lecture_add') :
@@ -91,6 +96,7 @@ def lecture_category(request, category):
 
 
 class LectureAdd(View):  # 강좌 개설
+    @method_decorator(user_passes_test(login_required, login_url='/app/sign_in/'))
     def get(self, request):
         data = request.GET
         category_list = Category.objects.all()
@@ -107,6 +113,7 @@ class LectureAdd(View):  # 강좌 개설
         return render(request, 'app/lecture_add.html', context)
 
     @csrf_exempt
+    @method_decorator(user_passes_test(login_required, login_url='/app/sign_in/'))
     def post(self, request):
         data = request.POST
         lecture_select = data['lecture_select']
@@ -122,6 +129,7 @@ class LectureAdd(View):  # 강좌 개설
         return HttpResponseRedirect('/app/lecture/all')
 
 class LectureDetail(View):
+    @method_decorator(user_passes_test(login_required, login_url='/app/sign_in/'))
     def get(self, request):
         category_list = Category.objects.all()
         searchText = request.GET.get("data")
@@ -154,23 +162,27 @@ class LectureDetail(View):
             temp_dict['cur_pnum'] = user_count
             temp_dict['start_time'] = temp.start_time
             temp_dict['end_time'] = temp.end_time
-            try:
-                teacher = Teach.objects.filter(section_id=temp)[0]
-                user = User.objects.filter(user_id=teacher).first()
+            temp_dict['end_time'] = temp.end_time
+            teacher = Teach.objects.filter(section_id=temp).first()
+            if teacher :
+                user = User.objects.filter(username=teacher.teacher_id.user_id).first()
                 temp_dict['teacher'] = user.username
-            except:
+            else :
                 temp_dict['teacher'] = ""
-                pass
             section_list.append(temp_dict)
 
-        flag = Teacher.objects.filter(user_id=request.user).count()
+
         context = {}
         context['category_list'] = category_list
         context['data'] = data_list
         context['section_list'] = section_list
+        if request.user.is_anonymous():
+            return render(request, 'app/lecture_all.html', context)
+        flag = Teacher.objects.filter(user_id=request.user).count()
         context['is_teacher'] = flag
         return render(request, 'app/lecture_detail.html', context)
 
+    @method_decorator(user_passes_test(login_required, login_url='/app/sign_in/'))
     def post(self, request):
         data = request.POST
         print(data)
@@ -195,6 +207,7 @@ def lecture_check(request):
 
 
 class SectionAdd(View):
+    @method_decorator(user_passes_test(login_required, login_url='/app/sign_in/'))
     def get(self, request, lecture):
         category_list = Category.objects.all()
         data = dict()
@@ -212,6 +225,7 @@ class SectionAdd(View):
 
         return render(request, 'app/lecture_section_add.html', context)
 
+    @method_decorator(user_passes_test(login_required, login_url='/app/sign_in/'))
     def post(self, request, lecture):
         data = request.POST
         print(data)
@@ -283,5 +297,13 @@ class SectionAdd(View):
         return HttpResponseRedirect('/app/lecture/detail/?data=' + course.title)
 
 
+def lecture_delete(request):
+    username = request.GET.get('username')
+    section_id = request.GET.get('section')[:-1]
 
-
+    teach = Teach.objects.filter(section_id=section_id).first()
+    if teach.teacher_id.user_id == request.user:
+        Section.objects.filter(id=section_id).delete()
+        return HttpResponse("OK")
+    else:
+        return HttpResponse(status=400)

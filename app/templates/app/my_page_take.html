@@ -1,33 +1,36 @@
 {% extends 'app/my_page.html' %}
 {% block my_page %}
-    <div class="page-header">
-        <h1>마이 페이지 - 수강한 강좌</h1>
-    </div>
     <div class="container">
-        {% if take%}
-            <div class="page-header">
-                <h3>내가 수강한 강좌</h3>
-            </div>
-          <table class="table table-striped">
-                    <thead>
+        {% if take %}
+            {% if friend_id %}
+                <div class="page-header">
+                    <h1>{{ friend_id }}의 수강한 강좌</h1>
+                </div>
+            {% else %}
+                 <div class="page-header">
+                    <h3>내가 수강한 강좌</h3>
+                </div>
+            {% endif %}
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>강좌명</th>
+                    <th>섹션번호</th>
+                    <th>시작일</th>
+                    <th>종료일</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for element in take %}
                     <tr>
-                        <th>강좌명</th>
-                        <th>섹션번호</th>
-                        <th>시작일</th>
-                        <th>종료일</th>
+                        <td>{{ element.course_title }}</td>
+                        <td>{{ element.section_id }}</td>
+                        <td>{{ element.start_date }}</td>
+                        <td>{{ element.end_date }}</td>
                     </tr>
-                    </thead>
-                    <tbody>
-                    {% for element in take %}
-                        <tr>
-                            <td>{{ element.course_title }}</td>
-                            <td>{{ element.section_id }}</td>
-                            <td>{{ element.start_date }}</td>
-                            <td>{{ element.end_date }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                {% endfor %}
+                </tbody>
+            </table>
         {% endif %}
     </div>
 

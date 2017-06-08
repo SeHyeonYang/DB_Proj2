@@ -4,6 +4,7 @@ from django.db.models import Q
 from .authentify import *
 from django.http import HttpResponseRedirect, HttpResponse
 from django.db.models import F
+from django.contrib.auth.decorators import user_passes_test
 
 
 def my_page(request, menu):
@@ -13,10 +14,12 @@ def my_page(request, menu):
     context['is_teacher'] = is_teacher(user)
     if menu == "info":
         return render(request, 'app/my_page_info.html', context)
+    elif menu == "stati":
+        return render(request, 'app/my_page_stati.html', context)
     elif menu == "history":
         print("history")
         user = request.user
-        section_history = Section.objects.filter(teach__teacher_id__user_id=user, end_date__lte=datetime.today())
+        section_history = Section.objects.filter(teach__teacher_id__user_id=user, end_date__lt=datetime.today())
         print(section_history.query)
         section_list = []
         for section in section_history:
@@ -30,6 +33,8 @@ def my_page(request, menu):
             temp_dict['start_time'] = section.start_time
             temp_dict['end_time'] = section.end_time
             temp_dict['location'] = section.location
+            student_count = Take.objects.filter(section_id=section).count()
+            temp_dict['student_count'] = student_count
             section_list.append(temp_dict)
         context['section_history_list'] = section_list
         return render(request, 'app/my_page_course_history.html', context)
@@ -48,6 +53,8 @@ def my_page(request, menu):
             temp_dict['start_time'] = section.start_time
             temp_dict['end_time'] = section.end_time
             temp_dict['location'] = section.location
+            student_count = Take.objects.filter(section_id=section).count()
+            temp_dict['student_count'] = student_count
             section_list.append(temp_dict)
         context['section_ongoing_list'] = section_list
         return render(request, 'app/my_page_section_ongoing.html', context)
@@ -120,7 +127,14 @@ def my_page(request, menu):
     elif menu == "lecture":
         return render(request, 'app/my_page_course_history.html', context)
     elif menu == "take":
-        my_take = Take.objects.filter(user_id=user).all()
+        is_friend_take = request.GET.get('friend')
+        if is_friend_take is not None:
+            friend_id = is_friend_take[:-1]
+            friend = User.objects.filter(username=friend_id).first()
+            my_take = Take.objects.filter(user_id=friend).all()
+            context['friend_id'] = friend_id
+        else:
+            my_take = Take.objects.filter(user_id=user).all()
         my_take_section_list = []
         for take in my_take:
             temp_dict = dict()
@@ -162,3 +176,5 @@ def my_page_option(request, option):
         # user.save()
 
     return HttpResponse("OK")
+
+
