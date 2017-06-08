@@ -127,7 +127,14 @@ def my_page(request, menu):
     elif menu == "lecture":
         return render(request, 'app/my_page_course_history.html', context)
     elif menu == "take":
-        my_take = Take.objects.filter(user_id=user).all()
+        is_friend_take = request.GET.get('friend')
+        if is_friend_take is not None:
+            friend_id = is_friend_take[:-1]
+            friend = User.objects.filter(username=friend_id).first()
+            my_take = Take.objects.filter(user_id=friend).all()
+            context['friend_id'] = friend_id
+        else:
+            my_take = Take.objects.filter(user_id=user).all()
         my_take_section_list = []
         for take in my_take:
             temp_dict = dict()
