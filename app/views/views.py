@@ -13,6 +13,8 @@ from django.contrib.auth.decorators import user_passes_test
 
 def teacher(request):
     teachers = Teacher.objects.all()
+    print("get all teacher related info")
+    print(teachers.query)
     teacher_info = []
     for _teacher in teachers:
         temp_dict = dict()
@@ -27,6 +29,8 @@ def teacher(request):
         data = request.POST
         course_name = data['search-teacher-by-course']
         courses = Course.objects.filter(title__contains=course_name).all()
+        print("get all course related info")
+        print(courses.query)
         find_teacher_info = []
         for course in courses:
             for section in course.section.all():

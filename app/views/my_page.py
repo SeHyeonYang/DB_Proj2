@@ -18,12 +18,13 @@ def my_page(request, menu):
     elif menu == "stati":
         teacher = Teacher.objects.filter(user_id=user.id).first()
         times = Teach.objects.filter(teacher_id=teacher).count()
-        print(times)
 
         student_count = Take.objects.filter(section_id__teach__teacher_id=teacher).count()
         print(student_count)
 
         students = Take.objects.filter(section_id__teach__teacher_id=teacher).values('user_id__username').distinct()
+        print("내 수업 들은 애들")
+        print(students.query)
         students_list = []
         for s in students:
             students_list.append(s['user_id__username'])
@@ -31,13 +32,13 @@ def my_page(request, menu):
 
         top_people_list = []
         top_people = Take.objects.filter(section_id__teach__teacher_id=teacher).values('user_id__username').annotate(user_take_count=Count('user_id')).order_by('-user_take_count')
+        print("top_people")
+        print(top_people.query)
         for p in top_people:
             temp_dict = dict()
             temp_dict['username'] = p['user_id__username']
             temp_dict['count'] = p['user_take_count']
             top_people_list.append(temp_dict)
-
-
 
         temp = str(times) + "/" + str(student_count)
         print(str(temp))
@@ -74,6 +75,8 @@ def my_page(request, menu):
     elif menu == "ongoing":
         user = request.user
         section_ongoing = Section.objects.filter(teach__teacher_id__user_id=user, end_date__gte=datetime.today())
+        print("ongoing")
+        print(section_ongoing.query)
         section_list = []
         for section in section_ongoing:
             temp_dict = dict()
@@ -99,6 +102,7 @@ def my_page(request, menu):
                 if option == "findbyall":
                     data = request.POST.get("search-friend-by-all")
                     friend_search_list = User.objects.filter(Q(username=data) | Q(first_name=data) | Q(last_name=data))
+                    print(friend_search_list.query)
                     if friend_search_list.count() != 0:
                         search_list = []
                         for a in friend_search_list:
@@ -110,6 +114,7 @@ def my_page(request, menu):
                         context['friend_search_list'] = search_list
                     maybe_friend_search_list = User.objects.filter(
                         Q(username__contains=data) | Q(first_name__contains=data) | Q(last_name__contains=data))
+                    print(maybe_friend_search_list.query)
                     if maybe_friend_search_list.count() != 0:
                         search_list_sub = []
                         for a in maybe_friend_search_list:
