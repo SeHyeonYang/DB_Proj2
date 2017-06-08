@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
+from django.db.models import Count
 from .authentify import *
 from django.http import HttpResponseRedirect, HttpResponse
 from django.db.models import F
@@ -17,8 +18,20 @@ def my_page(request, menu):
     elif menu == "stati":
         teacher = Teacher.objects.filter(user_id=user.id).first()
         times = Teach.objects.filter(teacher_id=teacher).count()
-        students = Take.objects.filter(section_id__teach__teacher_id=teacher).count()
-        temp = str(times) + "/" + str(students)
+        print(times)
+        student_count = Take.objects.filter(section_id__teach__teacher_id=teacher).count()
+        print(student_count)
+        students = Take.objects.filter(section_id__teach__teacher_id=teacher).values('user_id').distinct()
+        print(students.all())
+        students_list = []
+        for s in students:
+            students_list.append(s.user_id)
+        print(students_list)
+        top_person = Take.objects.filter(section_id__teach__teacher_id=teacher).values('user_id').annotate(user_take_count=Count('user_id')).order_by('-user_take_count')
+        print(top_person.query)
+
+
+        temp = str(times) + "/" + str(student_count)
         print(str(temp))
         return render(request, 'app/my_page_stati.html', context)
     elif menu == "history":
