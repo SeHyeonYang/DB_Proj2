@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponseRedirect, HttpResponse
 from app.models import *
+from django.db.models import F
 
 import json
 
@@ -95,7 +96,7 @@ class LectureDetail(View):
         data_list.append(data)
 
         section_list = list()
-        temp_section_list = Section.objects.filter(course_id=course).all()
+        temp_section_list = Section.objects.filter(course_id=course, end_date__lte=F(datetime.now())).all()
         for temp in temp_section_list:
             temp_dict = dict()
             temp_dict['section_id'] = temp.id
