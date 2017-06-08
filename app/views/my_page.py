@@ -14,10 +14,12 @@ def my_page(request, menu):
     context['is_teacher'] = is_teacher(user)
     if menu == "info":
         return render(request, 'app/my_page_info.html', context)
+    elif menu == "stati":
+        return render(request, 'app/my_page_stati.html', context)
     elif menu == "history":
         print("history")
         user = request.user
-        section_history = Section.objects.filter(teach__teacher_id__user_id=user, end_date__lte=datetime.today())
+        section_history = Section.objects.filter(teach__teacher_id__user_id=user, end_date__lt=datetime.today())
         print(section_history.query)
         section_list = []
         for section in section_history:
