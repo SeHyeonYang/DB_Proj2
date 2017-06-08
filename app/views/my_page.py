@@ -25,6 +25,7 @@ def my_page(request, menu):
         print(students.all())
         students_list = []
         for s in students:
+            print(s)
             students_list.append(s.user_id)
         print(students_list)
         top_person = Take.objects.filter(section_id__teach__teacher_id=teacher).values('user_id').annotate(user_take_count=Count('user_id')).order_by('-user_take_count')
