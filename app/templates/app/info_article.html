@@ -7,6 +7,9 @@
             tr, td{
                 align: center;
             }
+            label{
+
+            }
         </style>
         <h2>
         </h2>
@@ -14,35 +17,41 @@
     </head>
     <body>
     <div class="container">
-        <table class="table table-responsive" align="center" width="300">
+        <form class="form-horizontal" method="post" action="/app/article/{{ article.id }}/">
+            {% csrf_token %}
+            <table class="table table-responsive" align="center" width="300">
 
                 <tbody>
                 <form name=writeform style="position: absolute; top: 100px">
                     <tr>
+                        <th width="250"> <center> 게시번호 </center> </th>
+                        <label name="id"><td>{{ article.id }}</td></label>
+                    </tr>
+                    <tr>
                         <th width="250"> <center> 제목 </center> </th>
-                        <td> {{ article.title }} </td>
+                        <label name="title"><td>{{ article.title }} </td></label>
                     </tr>
                     <tr>
                         <th>  <center>카테고리 </center></th>
-                         <td> 카테고리 </td>
+                        <td> 카테고리 </td>
                     </tr>
                     <tr>
                         <th>  <center> 작성자 </center></th>
-                        <td> {{ article.user_id }} </td>
+                        <label name="user_id"><td>{{ article.user_id }} </td></label>
                     </tr>
-                     <tr>
+                    <tr>
                         <th>  <center> 작성일 </center></th>
-                        <td> {{ article.date }} </td>
+                        <label name="date"><td>{{ article.date }} </td></label>
                     </tr>
                     <tr>
                         <th> <center>내용</center></th>
-                        <td height="450">{{ article.contents }}</td>
+                        <td height="400">{{ article.contents }} </td>
                     </tr>
 
                     <tr>
 
                         <td></td>
-                        <td align="right"> <button class="btn btn-default" type="button" onclick="location.href = '/app/article/total/'">삭제</button>
+                        <td align="right"> <button class="btn btn-default" type="submit">삭제</button>
                             <button class="btn btn-default" type="button" onclick="location.href = '/app/article/total/'">목록</button></td>
 
                         </td>
@@ -50,7 +59,8 @@
                 </form>
                 </tbody>
 
-        </table>
+            </table>
+        </form>
     </div>
     </body>
     </html>
