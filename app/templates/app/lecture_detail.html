@@ -136,8 +136,8 @@
                                                 console.log(due_date_array[0] + " " + due_date_array[1] + " " + due_date_array[2])
                                                 console.log(month + " " + day + " " + year)
 
-                                                if (Number(due_date_array[2]) >= Number(year)) {
-                                                    if (Number(due_date_array[0]) >= Number(month)) {
+                                                if (Number(due_date_array[2]) == Number(year)) {
+                                                    if (Number(due_date_array[0]) == Number(month)) {
                                                         if (Number(due_date_array[1]) >= Number(day)) {
                                                             document.write('<td><button class="btn btn-warning" type="submit" onclick="Info();">신청</button></td>');
                                                             document.write('<div class="form-group">');
@@ -149,9 +149,23 @@
                                                             document.write('<td>마감</td>');
                                                         }
                                                     }
+                                                    else if(Number(due_date_array[0]) > Number(month)) {
+                                                        document.write('<td><button class="btn btn-warning" type="submit" onclick="Info();">신청</button></td>');
+                                                        document.write('<div class="form-group">');
+                                                        document.write('<input hidden type="text" name="section_enroll" id="section_enroll" value="{{ section.section_id }}">');
+                                                        document.write('<input hidden type="text" name="lecture_name" id="lecture_name" value="{{ a.lecture_name }}">');
+                                                        document.write('</div>');
+                                                    }
                                                     else {
                                                         document.write('<td>마감</td>');
                                                     }
+                                                }
+                                                else if(Number(due_date_array[2]) > Number(year)) {
+                                                    document.write('<td><button class="btn btn-warning" type="submit" onclick="Info();">신청</button></td>');
+                                                    document.write('<div class="form-group">');
+                                                    document.write('<input hidden type="text" name="section_enroll" id="section_enroll" value="{{ section.section_id }}">');
+                                                    document.write('<input hidden type="text" name="lecture_name" id="lecture_name" value="{{ a.lecture_name }}">');
+                                                    document.write('</div>');
                                                 }
                                                 else {
                                                     document.write('<td>마감</td>');

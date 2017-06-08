@@ -15,6 +15,11 @@ def my_page(request, menu):
     if menu == "info":
         return render(request, 'app/my_page_info.html', context)
     elif menu == "stati":
+        teacher = Teacher.objects.filter(user_id=user.id).first()
+        times = Teach.objects.filter(teacher_id=teacher).count()
+        students = Take.objects.filter(section_id__teach__teacher_id=teacher).count()
+        temp = str(times) + "/" + str(students)
+        print(str(temp))
         return render(request, 'app/my_page_stati.html', context)
     elif menu == "history":
         print("history")
