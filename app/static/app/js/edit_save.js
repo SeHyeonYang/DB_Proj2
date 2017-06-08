@@ -115,7 +115,7 @@ function join_group(group_id) {
     });
 
     $.ajax({
-        url: '/app/group_home/?data=' + group_id + '/',
+        url: '/app/group_home/?option=join&data=' + group_id + '/',
         type: 'POST',
         data: group_id,
         success: function (result) {
