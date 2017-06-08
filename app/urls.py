@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^lecture_check/$', views.lecture_check, name='lecture_check'),
     url(r'^lecture/detail/$', views.LectureDetail.as_view(), name='lecture_detail'),
     url(r'^lecture/(?P<lecture>.*)/section/add/$', views.SectionAdd.as_view(), name='section_add'),
+    url(r'^lecture/(?P<category>[\w]+)/$', views.lecture_category, name='lecture_category'),
     url(r'^sign_up/$', views.SignUp.as_view(), name='sign_up'),
     url(r'^sign_out/$', views.sign_out, name='sign_out'),
     url(r'^group_home/$', views.group_home, name='group_home'),
@@ -20,5 +21,5 @@ urlpatterns = [
     url(r'^article/(?P<option>[\w]+)/$', views.article, name='article'),
     url(r'^my_page/(?P<menu>[\w]+)/$', views.my_page, name='my_page'),
     url(r'^group_create/$',views.group_create,name ='group_create'),
-    url(r'^group_private/$',views.group_private,name ='group_private'),
+    url(r'^group_private/(?P<group_id>[\d]+)/(?P<option>[\w]+)/$',views.group_private,name ='group_private'),
 ]

@@ -1,0 +1,42 @@
+{% extends 'app/menu_bar.html' %}
+{%  block content %}
+
+
+    <head>
+        <h2>
+            <div style="text-align:center">글쓰기
+            </div>
+        </h2>
+        <!-- Latest compiled and minified CSS -->
+    </head>
+    <body>
+    <div class="container">
+        <form class="form-horizontal" method="post" action="/app/group_private/{{ group_id.id }}/write/">
+            {% csrf_token %}
+            <table class="table table-bordered" >
+
+                <tbody>
+                <form>
+                    <tr>
+                        <th> 제목</th>
+                        <td><input type="text" placeholder="제목을 입력하세요. " name="title" class="form-control"/></td>
+                    </tr>
+                    <tr>
+                        <th>  내용 </th>
+                        <td><textarea cols="10" rows="20" placeholder="내용을 입력하세요. " name="content" class="form-control" ></textarea></td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2">
+                            <button class="btn btn-default pull-right" type="submit" onclick="location.href = '/app/group_private/{{ group_id.id }}/write/'">등록</button>
+                            <button class="btn btn-default pull-left" type="button" onclick="location.href = '/app/group_private/{{ group_id.id }}/total'">목록</button>
+                        </td>
+                    </tr>
+                </form>
+                </tbody>
+            </table>
+        </form>
+    </div>
+    </body>
+
+{% endblock content %}

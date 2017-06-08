@@ -8,11 +8,11 @@
             <h3>내 정보</h3>
         </div>
         <div>
-            <p class="col-sm-1">last name : </p>
+            <p class="col-sm-2">last name : </p>
             <p id="my-page-user-name">{{ user.last_name }}</p>
         </div>
         <div>
-            <p class="col-sm-1">first name : </p>
+            <p class="col-sm-2">first name : </p>
             <p id="my-page-nickname">{{ user.first_name }}</p>
         </div>
         <div>
@@ -27,6 +27,7 @@
             </div>
             <p>{{ is_teacher.phone_num }} </p>
             <p>{{ is_teacher.email_addr }} </p>
+            <p>level : {{ is_teacher.level }} </p>
             <div>
                 <a id="edit-button-teacher-info" style="cursor: hand">수정하기</a>
                 <a hidden style="cursor: hand" id="save-button-teacher-info"

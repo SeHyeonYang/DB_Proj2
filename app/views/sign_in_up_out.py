@@ -11,7 +11,7 @@ import json
 
 #@user_passes_test(login_required, login_url='/app/sign_in/')
 def welcome(request):
-    return render(request, 'app/course_list.html', {})
+    return HttpResponseRedirect('/app/lecture/all/')
 
 
 def sign_in(request):
@@ -67,7 +67,7 @@ class SignUp(View):  # 회원가입
                     cate.save()
             teacher.save()
         _user.save()
-        app_user.save()
+        #app_user.save()
         return HttpResponseRedirect('/app/sign_in/')
 
 
