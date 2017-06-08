@@ -4,6 +4,7 @@ from django.db.models import Q
 from .authentify import *
 from django.http import HttpResponseRedirect, HttpResponse
 from django.db.models import F
+from django.contrib.auth.decorators import user_passes_test
 
 
 def my_page(request, menu):

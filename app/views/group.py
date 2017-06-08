@@ -5,7 +5,11 @@ from app.models import *
 import time
 import json
 from django.db.models import Q
+from .authentify import *
+from django.contrib.auth.decorators import user_passes_test
 
+
+@user_passes_test(login_required, login_url='/app/sign_in/')
 def group_home(request):
     _group_list = Group.objects.all()
     print(_group_list.query)
@@ -114,6 +118,7 @@ def group_home(request):
                 return render(request, 'app/group_home.html', context)
 
 
+@user_passes_test(login_required, login_url='/app/sign_in/')
 def group_create(request):
     _category_list = Category.objects.all()
     category_list = []
@@ -145,6 +150,7 @@ def group_create(request):
         return render(request, 'app/group_create.html', context)
 
 
+@user_passes_test(login_required, login_url='/app/sign_in/')
 def group_private(request,group_id, option):
     group_member = UserGroup.objects.filter(group_id=group_id)
     member_list = []
@@ -195,6 +201,6 @@ def group_private(request,group_id, option):
         return render(request, 'app/group_private.html', context)
 
 
-def group_write(request,group_id):
-
-    return render(request, 'app/group_private.html',{})
+@user_passes_test(login_required, login_url='/app/sign_in/')
+def group_write(request, group_id):
+    return render(request, 'app/group_private.html', {})

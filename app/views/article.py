@@ -5,8 +5,11 @@ from django.db.models import Q
 from app.models import *
 import datetime
 import json
+from .authentify import *
+from django.contrib.auth.decorators import user_passes_test
 
 
+@user_passes_test(login_required, login_url='/app/sign_in/')
 def article(request, option):
     if option == 'total':
 
@@ -85,6 +88,7 @@ def article(request, option):
             return render(request, 'app/write_article.html', {})
 
 
+@user_passes_test(login_required, login_url='/app/sign_in/')
 def info_article(request, pk):
     context = Article.objects.get(id=pk)
     return render(request, 'app/info_article.html', {'article': context, })
