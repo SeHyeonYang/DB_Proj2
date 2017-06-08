@@ -16,24 +16,41 @@ class LectureAll(View):
             temp_dict = dict()
             temp_dict['lecture_name'] = course.title
             for category in category_list:
-                print(course.category_id)
-                print(category.id)
                 if course.category_id.id == category.id:
                     temp_dict['lecture_cate'] = category.category_name
                     break
             course_list.append(temp_dict)
 
+        flag = Teacher.objects.filter(user_id=request.user).count()
         context = {}
         context['category_list'] = category_list
         context['course_list'] = course_list
+        context['is_teacher'] = flag
         return render(request, 'app/lecture_all.html', context)
 
     def post(self, request):
 
         return HttpResponseRedirect('/app/lecture/add/')
 
-def lecture_category(request):
-    return render(request, '', {})
+def lecture_category(request, category):
+    category_list = Category.objects.all()
+    category_qs = Category.objects.filter(category_name=category)[0]
+    print(category_qs.category_name)
+    courses = Course.objects.filter(category_id=category_qs).all()
+    print(courses.count())
+    course_list = list()
+    for course in courses:
+        temp_dict = dict()
+        temp_dict['title'] = course.title
+        temp_dict['category_name'] = category
+        print(temp_dict)
+        course_list.append(temp_dict)
+
+    context = {}
+    context['category'] = category
+    context['category_list'] = category_list
+    context['course_list'] = course_list
+    return render(request, 'app/lecture_category.html', context)
 
 
 class LectureAdd(View):  # 강좌 개설
@@ -67,6 +84,7 @@ class LectureDetail(View):
         category_list = Category.objects.all()
         searchText = request.GET.get("data")
         print(searchText)
+
         data = dict()
         course = Course.objects.filter(title=searchText)[0]
         course_category = Category.objects.filter(id=course.category_id.id)[0]
@@ -75,13 +93,53 @@ class LectureDetail(View):
         data['lecture_desc'] = course.comments
         data_list = list()
         data_list.append(data)
-        print(data)
+
+        section_list = list()
+        temp_section_list = Section.objects.filter(course_id=course).all().order_by('due_date')
+        for temp in temp_section_list:
+            user_count = Take.objects.filter(section_id=temp).count()
+            temp_dict = dict()
+            temp_dict['section_id'] = temp.id
+            temp_dict['start_date'] = temp.start_date
+            temp_dict['end_date'] = temp.end_date
+            temp_dict['times'] = temp.times
+            temp_dict['location'] = temp.location
+            temp_dict['price'] = temp.price
+            temp_dict['due_date'] = temp.due_date
+            temp_dict['max_capacity'] = temp.max_capacity
+            temp_dict['min_capacity'] = temp.min_capacity
+            temp_dict['cur_pnum'] = user_count
+            temp_dict['start_time'] = temp.start_time
+            temp_dict['end_time'] = temp.end_time
+            try:
+                teacher = Teach.objects.filter(section_id=temp)[0]
+                user = User.objects.filter(user_id=teacher).first()
+                temp_dict['teacher'] = user.username
+            except:
+                temp_dict['teacher'] = ""
+                pass
+            section_list.append(temp_dict)
+
+        flag = Teacher.objects.filter(user_id=request.user).count()
         context = {}
         context['category_list'] = category_list
         context['data'] = data_list
+        context['section_list'] = section_list
+        context['is_teacher'] = flag
         return render(request, 'app/lecture_detail.html', context)
 
+    def post(self, request):
+        data = request.POST
+        print(data)
 
+        section_data = data['section_enroll']
+        lecture_name = data['lecture_name']
+
+        section = Section.objects.filter(id=int(section_data)).first()
+        take = Take.objects.create(user_id=request.user, section_id=section)
+        take.save()
+
+        return HttpResponseRedirect('/app/lecture/detail/?data=' + lecture_name)
 
 
 def lecture_check(request):
@@ -175,7 +233,11 @@ class SectionAdd(View):
         section = Section.objects.create(course_id=course, start_date=section_start_date, end_date=section_end_date, times=day_count, location=section_place, price=section_sum, due_date=section_deadline, max_capacity=section_max_pnum, min_capacity=section_min_pnum, start_time=section_start_time, end_time=section_finish_time)
         section.save()
 
-        return HttpResponseRedirect('/app/lecture/detail/?data='+course.title)
+        teacher = Teacher.objects.filter(user_id=request.user).first()
+        teach = Teach.objects.create(teacher_id=teacher, section_id=section)
+        teach.save()
+
+        return HttpResponseRedirect('/app/lecture/detail/?data=' + course.title)
 
 
 

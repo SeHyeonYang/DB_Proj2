@@ -30,19 +30,9 @@
                     <li style="font-weight: bold; margin-bottom: 10px;"><a href="{% url 'lecture_all' %}">- 전체 강좌</a></li>
                     {% for category in category_list %}
                         <li style="font-weight: bold; margin-bottom: 10px;" id="category-{{ category.id }}"
-                            name="category-{{ category.id }}"><a href="#">
+                            name="category-{{ category.id }}"><a href="/app/lecture/{{ category.category_name }}/">
                             {{ category.category_name }}</a></li>
                     {% endfor %}
-                </ul>
-                <ul class="nav nav-sidebar">
-                    <li role="separator"
-                        style="height: 1px; margin: 9px 0; overflow: hidden; background-color: #0f0f0f;"></li>
-                </ul>
-                <ul class="nav nav-sidebar">
-                    <li style="font-weight: bold; margin-bottom: 10px;"><a href="#">- 전체 게시글</a></li>
-                    <li style="margin-left: 10px"><a href="#">여기에</a></li>
-                    <li style="margin-left: 10px"><a href="#">카테고리</a></li>
-                    <li style="margin-left: 10px"><a href="#">데이터를...</a></li>
                 </ul>
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
