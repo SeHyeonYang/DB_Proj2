@@ -217,7 +217,8 @@ class SectionAdd(View):
         section = Section.objects.create(course_id=course, start_date=section_start_date, end_date=section_end_date, times=day_count, location=section_place, price=section_sum, due_date=section_deadline, max_capacity=section_max_pnum, min_capacity=section_min_pnum, start_time=section_start_time, end_time=section_finish_time)
         section.save()
 
-        teach = Teach.objects.create(teacher_id=request.user, section_id=section)
+        teacher = Teacher.objects.filter(user_id=request.user).first()
+        teach = Teach.objects.create(teacher_id=teacher, section_id=section)
         teach.save()
 
         return HttpResponseRedirect('/app/lecture/detail/?data=' + course.title)
