@@ -1,0 +1,43 @@
+{% extends 'app/my_page.html' %}
+{% block my_page %}
+    <div class="page-header">
+        <h1>강좌 이력</h1>
+    </div>
+    <div class="page-header">
+        <h3>분기강좌</h3>
+    </div>
+    <div class="table-responsive" id="lecture_list">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>강좌명</th>
+                <th>섹션 번호</th>
+                <th>개강일</th>
+                <th>종강일</th>
+                <th>장소</th>
+                <th>수강금액</th>
+                <th>빈도</th>
+                <th>시작시간</th>
+                <th>종료시간</th>
+                <th>수강인원</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for section in section_history_list %}
+                <tr>
+                    <td>{{ section.course_title }}</td>
+                    <td>{{ section.section_id}}</td>
+                    <td>{{ section.start_date }}</td>
+                    <td>{{ section.end_date }}</td>
+                    <td>{{ section.location }}</td>
+                    <td>{{ section.price }}</td>
+                    <td>{{ section.times }}</td>
+                    <td>{{ section.start_time }}시</td>
+                    <td>{{ section.end_time }}시</td>
+                    <td>?명</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock my_page %}
