@@ -21,6 +21,13 @@
             margin-left: -20px;
         }
     </style>
+    <script type="text/javascript">
+         <!--
+            function Info() {
+               alert ("강좌에 수강을 신청하셨습니다.");
+            }
+         //-->
+      </script>
 {% endblock head %}
 {% block content %}
 
@@ -64,95 +71,101 @@
                         </tr>
                         </tbody>
                     </table>
+                    {% if section_list %}
+                        <div class="page-header">
+                            <h3>분기강좌</h3>
+                        </div>
+                        <form class="form-horizontal" method="post"
+                              action="/app/lecture/detail/?data={{ a.lecture_name }}">
+                            {% csrf_token %}
+                            <div class="table-responsive" id="lecture_list">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>강사명</th>
+                                        <th>개강일</th>
+                                        <th>종강일</th>
+                                        <th>장소</th>
+                                        <th>수강금액</th>
+                                        <th>빈도</th>
+                                        <th>시작시간</th>
+                                        <th>종료시간</th>
+                                        <th>최소인원</th>
+                                        <th>최대인원</th>
+                                        <th>현재인원</th>
+                                        <th>마감일</th>
+                                        <th>상태</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for section in section_list %}
+                                        <tr>
+                                            <td>{{ section.teacher }}</td>
+                                            <td>{{ section.start_date }}</td>
+                                            <td>{{ section.end_date }}</td>
+                                            <td>{{ section.location }}</td>
+                                            <td>{{ section.price }}</td>
+                                            <td>{{ section.times }}</td>
+                                            <td>{{ section.start_time }}시</td>
+                                            <td>{{ section.end_time }}시</td>
+                                            <td>{{ section.min_capacity }}명</td>
+                                            <td>{{ section.max_capacity }}명</td>
+                                            <td>?명</td>
+                                            <td>{{ section.due_date }}</td>
+                                            <script language="JavaScript">
+                                                var dt = new Date();
+                                                var month = dt.getMonth() + 1;
+                                                var day = dt.getDate();
+                                                var year = dt.getFullYear();
+                                                var due_date_array = ('{{ section.due_date }}').split(' ');
 
-                {% endfor %}
+                                                if (due_date_array[0] == 'January') due_date_array[0] = 1;
+                                                if (due_date_array[0] == 'February') due_date_array[0] = 2;
+                                                if (due_date_array[0] == 'March') due_date_array[0] = 3;
+                                                if (due_date_array[0] == 'April') due_date_array[0] = 4;
+                                                if (due_date_array[0] == 'May') due_date_array[0] = 5;
+                                                if (due_date_array[0] == 'June') due_date_array[0] = 6;
+                                                if (due_date_array[0] == 'July') due_date_array[0] = 7;
+                                                if (due_date_array[0] == 'August') due_date_array[0] = 8;
+                                                if (due_date_array[0] == 'September') due_date_array[0] = 9;
+                                                if (due_date_array[0] == 'October') due_date_array[0] = 10;
+                                                if (due_date_array[0] == 'November') due_date_array[0] = 11;
+                                                if (due_date_array[0] == 'December') due_date_array[0] = 12;
+                                                due_date_array[1] = due_date_array[1].split(',')[0];
 
-                {% if section_list %}
-                    <div class="page-header">
-                        <h3>분기강좌</h3>
-                    </div>
-                    <div class="table-responsive" id="lecture_list">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>강사명</th>
-                                <th>개강일</th>
-                                <th>종강일</th>
-                                <th>장소</th>
-                                <th>수강금액</th>
-                                <th>빈도</th>
-                                <th>시작시간</th>
-                                <th>종료시간</th>
-                                <th>최소인원</th>
-                                <th>최대인원</th>
-                                <th>현재인원</th>
-                                <th>마감일</th>
-                                <th>상태</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for section in section_list %}
-                                <tr>
-                                    <td>{{ section.teacher }}</td>
-                                    <td>{{ section.start_date }}</td>
-                                    <td>{{ section.end_date }}</td>
-                                    <td>{{ section.location }}</td>
-                                    <td>{{ section.price }}</td>
-                                    <td>{{ section.times }}</td>
-                                    <td>{{ section.start_time }}시</td>
-                                    <td>{{ section.end_time }}시</td>
-                                    <td>{{ section.min_capacity }}명</td>
-                                    <td>{{ section.max_capacity }}명</td>
-                                    <td>?명</td>
-                                    <td>{{ section.due_date }}</td>
-                                    <script language="JavaScript">
-                                        var dt = new Date();
-                                        var month = dt.getMonth() + 1;
-                                        var day = dt.getDate();
-                                        var year = dt.getFullYear();
-                                        var due_date_array = ('{{ section.due_date }}').split(' ');
+                                                console.log(due_date_array[0] + " " + due_date_array[1] + " " + due_date_array[2])
+                                                console.log(month + " " + day + " " + year)
 
-                                        if (due_date_array[0] == 'January') due_date_array[0] = 1;
-                                        if (due_date_array[0] == 'February') due_date_array[0] = 2;
-                                        if (due_date_array[0] == 'March') due_date_array[0] = 3;
-                                        if (due_date_array[0] == 'April') due_date_array[0] = 4;
-                                        if (due_date_array[0] == 'May') due_date_array[0] = 5;
-                                        if (due_date_array[0] == 'June') due_date_array[0] = 6;
-                                        if (due_date_array[0] == 'July') due_date_array[0] = 7;
-                                        if (due_date_array[0] == 'August') due_date_array[0] = 8;
-                                        if (due_date_array[0] == 'September') due_date_array[0] = 9;
-                                        if (due_date_array[0] == 'October') due_date_array[0] = 10;
-                                        if (due_date_array[0] == 'November') due_date_array[0] = 11;
-                                        if (due_date_array[0] == 'December') due_date_array[0] = 12;
-                                        due_date_array[1] = due_date_array[1].split(',')[0];
-
-                                        console.log(due_date_array[0] + " " + due_date_array[1] + " " + due_date_array[2])
-                                        console.log(month + " " + day + " " + year)
-
-                                        if (Number(due_date_array[2]) >= Number(year)) {
-                                            if (Number(due_date_array[0]) >= Number(month)) {
-                                                if (Number(due_date_array[1]) >= Number(day)) {
-                                                    document.write('<td><a style="cursor=hand" onclick="getConfirmation({{ section.teacher }});">신청</a></td>');
+                                                if (Number(due_date_array[2]) >= Number(year)) {
+                                                    if (Number(due_date_array[0]) >= Number(month)) {
+                                                        if (Number(due_date_array[1]) >= Number(day)) {
+                                                            document.write('<td><button class="btn btn-warning" type="submit" onclick="Info();">신청</button></td>');
+                                                            document.write('<div class="form-group">');
+                                                            document.write('<input hidden type="text" name="section_enroll" id="section_enroll" value="{{ section.section_id }}">');
+                                                            document.write('<input hidden type="text" name="lecture_name" id="lecture_name" value="{{ a.lecture_name }}">');
+                                                            document.write('</div>');
+                                                        }
+                                                        else {
+                                                            document.write('<td>마감</td>');
+                                                        }
+                                                    }
+                                                    else {
+                                                        document.write('<td>마감</td>');
+                                                    }
                                                 }
                                                 else {
                                                     document.write('<td>마감</td>');
                                                 }
-                                            }
-                                            else {
-                                                document.write('<td>마감</td>');
-                                            }
-                                        }
-                                        else {
-                                            document.write('<td>마감</td>');
-                                        }
 
-                                    </script>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                {% endif %}
+                                            </script>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
+                    {% endif %}
+                {% endfor %}
             </div>
         </div>
     </div>

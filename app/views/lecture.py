@@ -98,6 +98,7 @@ class LectureDetail(View):
         temp_section_list = Section.objects.filter(course_id=course).all()
         for temp in temp_section_list:
             temp_dict = dict()
+            temp_dict['section_id'] = temp.id
             temp_dict['start_date'] = temp.start_date
             temp_dict['end_date'] = temp.end_date
             temp_dict['times'] = temp.times
@@ -124,6 +125,19 @@ class LectureDetail(View):
         context['section_list'] = section_list
         context['is_teacher'] = flag
         return render(request, 'app/lecture_detail.html', context)
+
+    def post(self, request):
+        data = request.POST
+        print(data)
+
+        section_data = data['section_enroll']
+        lecture_name = data['lecture_name']
+
+        section = Section.objects.filter(id=int(section_data)).first()
+        take = Take.objects.create(user_id=request.user, section_id=section)
+        take.save()
+
+        return HttpResponseRedirect('/app/lecture/detail/?data=' + lecture_name)
 
 
 def lecture_check(request):
