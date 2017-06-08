@@ -85,7 +85,7 @@ def my_page(request, menu):
                         search_list_sub.append(temp_dict)
                     context['friend_search_list_sub'] = search_list_sub
             elif action == "befriend":
-                friend_id= request.GET.get('data')[:-1]
+                friend_id = request.GET.get('data')[:-1]
                 friend = User.objects.filter(username=friend_id).exclude(username=request.user).first()
                 is_friend = Friend.objects.filter(sender_id=request.user, receiver_id=friend).count()
                 if is_friend == 0:
