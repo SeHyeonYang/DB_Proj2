@@ -21,5 +21,5 @@ urlpatterns = [
     url(r'^article/(?P<option>[\w]+)/$', views.article, name='article'),
     url(r'^my_page/(?P<menu>[\w]+)/$', views.my_page, name='my_page'),
     url(r'^group_create/$',views.group_create,name ='group_create'),
-    url(r'^group_private/$',views.group_private,name ='group_private'),
+    url(r'^group_private/(?P<group_id>[\d]+)/(?P<option>[\w]+)/$',views.group_private,name ='group_private'),
 ]

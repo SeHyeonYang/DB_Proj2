@@ -96,8 +96,10 @@ class LectureDetail(View):
         data_list.append(data)
 
         section_list = list()
-        temp_section_list = Section.objects.filter(course_id=course, end_date__lte=F(datetime.now())).all()
+
+        temp_section_list = Section.objects.filter(course_id=course).all().order_by('due_date')
         for temp in temp_section_list:
+            user_count = Take.objects.filter(section_id=temp).count()
             temp_dict = dict()
             temp_dict['section_id'] = temp.id
             temp_dict['start_date'] = temp.start_date
@@ -108,6 +110,7 @@ class LectureDetail(View):
             temp_dict['due_date'] = temp.due_date
             temp_dict['max_capacity'] = temp.max_capacity
             temp_dict['min_capacity'] = temp.min_capacity
+            temp_dict['cur_pnum'] = user_count
             temp_dict['start_time'] = temp.start_time
             temp_dict['end_time'] = temp.end_time
             try:
