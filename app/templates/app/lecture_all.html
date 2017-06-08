@@ -64,17 +64,37 @@
                         </tbody>
                     </table>
                 </div>
-            <form action="/app/lecture/all/" method="post">
-                {% csrf_token %}
-                <script language="JavaScript">
-                    if ('{{ is_teacher }}' != '0') {
-                        console.log("OK")
-                        document.write('<div class="col-sm-12 text-right">');
-                        document.write('<button class="btn btn-primary" type="submit" id="lecture_sign_up_button">강좌 개설</button>');
-                        document.write('</div>');
-                    }
 
-                </script>
+                <form class="form-horizontal" method="post" action="/app/lecture/all/">
+                    {% csrf_token %}
+                    <div class="input-group" style="float:left">
+                        <table>
+                            <tr>
+                                <td style="padding-right: 10px">
+                                    강좌명
+                                </td>
+                                <td>
+                                    <div class="input-group-btn">
+                                        <input hidden type="text" name="option" value="search">
+                                        <input type="text" class="form-control" name="search" placeholder="Search"
+                                               style="margin-right: 10px">
+                                        <button type="submit" class="btn btn-default">검색</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </form>
+                <form action="/app/lecture/all/" method="post">
+                    {% csrf_token %}
+                        <script language="JavaScript">
+                            if ('{{ is_teacher }}' != '0') {
+                                document.write('<div class="col-sm-12 text-right input-group">');
+                                document.write('<input hidden type="text" name="option" value="lecture_add">');
+                                document.write('<button class="btn btn-primary" type="submit" id="lecture_sign_up_button">강좌 개설</button>');
+                                document.write('</div>');
+                            }
+                        </script>
                 </form>
             </div>
         </div>
