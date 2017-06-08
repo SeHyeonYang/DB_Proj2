@@ -164,5 +164,22 @@ function delete_article(user_id, article_id) {
             alert("권한이 없어 지울 수 없습니다.");
         }
     });
+}
 
+function delete_section(username, section_id) {
+    $.ajaxSetup({
+        headers: {"X-CSRFToken": get_cookie("csrftoken")}
+    });
+
+    $.ajax({
+        url: '/app/lecture/delete/?user=' + username + '&section='+section_id+'/',
+        type: 'POST',
+        success: function (result) {
+            alert("분기강좌를 개설취소합니다.");
+            location.href = '/app/my_page/ongoing/'
+        },
+        error: function (error) {
+            alert("권한이 없어 취소할 수 없습니다.");
+        }
+    });
 }

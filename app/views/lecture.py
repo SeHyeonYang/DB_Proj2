@@ -162,6 +162,7 @@ class LectureDetail(View):
             temp_dict['cur_pnum'] = user_count
             temp_dict['start_time'] = temp.start_time
             temp_dict['end_time'] = temp.end_time
+            temp_dict['end_time'] = temp.end_time
             try:
                 teacher = Teach.objects.filter(section_id=temp)[0]
                 user = User.objects.filter(user_id=teacher).first()
@@ -297,5 +298,13 @@ class SectionAdd(View):
         return HttpResponseRedirect('/app/lecture/detail/?data=' + course.title)
 
 
+def lecture_delete(request):
+    username = request.GET.get('username')
+    section_id = request.GET.get('section')[:-1]
 
-
+    teach = Teach.objects.filter(section_id=section_id).first()
+    if teach.teacher_id.user_id == request.user:
+        Section.objects.filter(id=section_id).delete()
+        return HttpResponse("OK")
+    else:
+        return HttpResponse(status=400)

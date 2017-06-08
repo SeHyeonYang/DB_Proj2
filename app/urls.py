@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^leave/$', views.leave, name='leave'),
     url(r'^sign_in/$', views.sign_in, name='sign_in'),
     url(r'^lecture/add/$', views.LectureAdd.as_view(), name='lecture_add'),
+    url(r'^lecture/delete/$', views.lecture_delete, name='lecture_delete'),
     url(r'^lecture/all/$', views.LectureAll.as_view(), name='lecture_all'),
     url(r'^lecture_check/$', views.lecture_check, name='lecture_check'),
     url(r'^lecture/detail/$', views.LectureDetail.as_view(), name='lecture_detail'),
@@ -20,6 +21,6 @@ urlpatterns = [
     url(r'^article/(?P<pk>[\d]+)/$', views.info_article, name='article'),
     url(r'^article/(?P<option>[\w]+)/$', views.article, name='article'),
     url(r'^my_page/(?P<menu>[\w]+)/$', views.my_page, name='my_page'),
-    url(r'^group_create/$',views.group_create,name ='group_create'),
-    url(r'^group_private/(?P<group_id>[\d]+)/(?P<option>[\w]+)/$',views.group_private,name ='group_private'),
+    url(r'^group_create/$', views.group_create, name='group_create'),
+    url(r'^group_private/(?P<group_id>[\d]+)/(?P<option>[\w]+)/$', views.group_private, name='group_private'),
 ]

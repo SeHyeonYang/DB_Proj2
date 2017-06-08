@@ -20,6 +20,7 @@
                 <th>시작시간</th>
                 <th>종료시간</th>
                 <th>수강인원</th>
+                <th>개설취소</th>
             </tr>
             </thead>
             <tbody>
@@ -34,7 +35,8 @@
                     <td>{{ section.times }}</td>
                     <td>{{ section.start_time }}시</td>
                     <td>{{ section.end_time }}시</td>
-                    <td>?명</td>
+                    <td>{{ section.student_count }}</td>
+                    <td><a onclick='delete_section("{{ user.username }}","{{ section.section_id }}")'>삭제</a></td>
                 </tr>
             {% endfor %}
             </tbody>

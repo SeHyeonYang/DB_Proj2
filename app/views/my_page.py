@@ -31,6 +31,8 @@ def my_page(request, menu):
             temp_dict['start_time'] = section.start_time
             temp_dict['end_time'] = section.end_time
             temp_dict['location'] = section.location
+            student_count = Take.objects.filter(section_id=section).count()
+            temp_dict['student_count'] = student_count
             section_list.append(temp_dict)
         context['section_history_list'] = section_list
         return render(request, 'app/my_page_course_history.html', context)
@@ -49,6 +51,8 @@ def my_page(request, menu):
             temp_dict['start_time'] = section.start_time
             temp_dict['end_time'] = section.end_time
             temp_dict['location'] = section.location
+            student_count = Take.objects.filter(section_id=section).count()
+            temp_dict['student_count'] = student_count
             section_list.append(temp_dict)
         context['section_ongoing_list'] = section_list
         return render(request, 'app/my_page_section_ongoing.html', context)
@@ -163,3 +167,5 @@ def my_page_option(request, option):
         # user.save()
 
     return HttpResponse("OK")
+
+
