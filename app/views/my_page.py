@@ -71,27 +71,26 @@ def my_page(request, menu):
     elif menu == "lecture":
         return render(request, 'app/my_page_lecture.html', context)
     elif menu == "take":
-        my_take = Take.objects.filter(user_id=user)
+        my_take = Take.objects.filter(user_id=user).all()
         my_take_section_list = []
-        my_take_section = Section.objects.filter(id__in=my_take).select_related()
-        my_take_course = Course.objects.filter(id__in=my_take_section).select_related()
-        for take in my_take_section:
+        for take in my_take:
             temp_dict = dict()
-            temp_dict['section_id'] = take.id
-            temp_dict['start_date'] = take.start_date
-            temp_dict['end_date'] = take.end_date
+            temp_dict['course_title'] = take.section_id.course_id.title
+            temp_dict['section_id'] = take.section_id.id
+            temp_dict['start_date'] = take.section_id.start_date
+            temp_dict['end_date'] = take.section_id.end_date
             print(take.id)
             my_take_section_list.append(temp_dict)
         context['take'] = my_take_section_list
         return render(request, 'app/my_page_take.html', context)
     elif menu == "save":
-        user_name = request.POST.get("user_name")
-        nickname = request.POST.get("nickname")
+        last_name = request.POST.get("user_name")
+        first_name = request.POST.get("nickname")
 
         this_user = request.user
         user = User.objects.filter(username=this_user).first()
-        user.first_name = nickname
-        user.last_name = user_name
+        user.first_name = first_name
+        user.last_name = last_name
         user.save()
         return HttpResponse("OK")
     return render(request, 'app/my_page_info.html', {})
@@ -99,17 +98,17 @@ def my_page(request, menu):
 
 def my_page_option(request, option):
     if option == "save":
-        user_name = request.POST.get("user_name")
-        nickname = request.POST.get("nickname")
+        last_name = request.POST.get("user_name")
+        first_name = request.POST.get("nickname")
 
         this_user = request.user
-        this_user.first_name = nickname
-        this_user.last_name = user_name
+        this_user.first_name = first_name
+        this_user.last_name = last_name
         this_user.save()
 
         user = User.objects.filter(user_id=this_user).first()
-        user.first_name = nickname
-        user.last_name = user_name
+        user.first_name = first_name
+        user.last_name = last_name
 
         # user.save()
 

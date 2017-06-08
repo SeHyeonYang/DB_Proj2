@@ -11,49 +11,52 @@
     </head>
     <body>
     <div class="container">
-        <table class="table table-bordered" >
+        <form class="form-horizontal" method="post" action="/app/article/write/">
+            {% csrf_token %}
+            <table class="table table-bordered" >
 
-            <tbody>
-            <form>
-                <tr>
-                    <th>  제목 </th>
-                    <td><input type="text" placeholder="제목을 입력하세요. " name="subject" class="form-control"/></td>
-                </tr>
-                <tr>
-                    <th>  카테고리 </th>
-                    <td>
+                <tbody>
+                <form>
+                    <tr>
+                        <th>  제목 </th>
+                        <td><input type="text" placeholder="제목을 입력하세요. " name="title" class="form-control"/></td>
+                    </tr>
+                    <tr>
+                        <th>  카테고리 </th>
+                        <td>
 
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                카테고리 <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                {% for category in category_list %}
-                                    <li><a href="#">{{category.category_name }}</a></li>
-                                {% endfor %}
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    카테고리 <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    {% for category in category_list %}
+                                        <li><a href="#">{{category.category_name }}</a></li>
+                                    {% endfor %}
 
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th>  내용 </th>
-                    <td><textarea cols="10" rows="20" placeholder="내용을 입력하세요. " name="content" class="form-control" ></textarea></td>
-                </tr>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>  내용 </th>
+                        <td><textarea cols="10" rows="20" placeholder="내용을 입력하세요. " name="content" class="form-control" ></textarea></td>
+                    </tr>
 
-                <tr>
-                    <td colspan="2">
-                        <button class="btn btn-default pull-right" type="button" onclick="location.href = '/app/article/total/'">등록</button>
-                        <button class="btn btn-default pull-left" type="button" onclick="location.href = '/app/article/total/'">목록</button>
+                    <tr>
+                        <td colspan="2">
+                            <button class="btn btn-default pull-right" type="submit" onclick="location.href = '/app/article/write/'">등록</button>
+                            <button class="btn btn-default pull-left" type="button" onclick="location.href = '/app/article/total/'">목록</button>
 
-                        <!-- <a class="btn btn-default" onclick="sendData()"> 등록 </a>
-                        <a class="btn btn-default" type="reset"> reset </a>
-                        <a class="btn btn-default" onclick="javascript:location.href='list.jsp'">글 목록으로...</a> -->
-                    </td>
-                </tr>
-            </form>
-            </tbody>
-        </table>
+                            <!-- <a class="btn btn-default" onclick="sendData()"> 등록 </a>
+                            <a class="btn btn-default" type="reset"> reset </a>
+                            <a class="btn btn-default" onclick="javascript:location.href='list.jsp'">글 목록으로...</a> -->
+                        </td>
+                    </tr>
+                </form>
+                </tbody>
+            </table>
+        </form>
     </div>
     </body>
 

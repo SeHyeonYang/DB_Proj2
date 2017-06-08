@@ -12,6 +12,14 @@ from datetime import datetime, timedelta
 #    nickname = models.CharField(max_length=45)
 #    last_login = models.DateTimeField(blank=True, null=True)
 #
+
+
+class AppUser(models.Model):
+    user = models.OneToOneField(User)
+    name = models.CharField(max_length=45)
+    nickname = models.CharField(max_length=45)
+
+
 def default_time():
     now = datetime.now()
     start = now.replace(hour=22, minute=0, second=0, microsecond=0)
@@ -90,11 +98,6 @@ class Group(models.Model):
     category = models.ForeignKey(Category)
 
 
-class UserGroup(models.Model):
-    user_id = models.ForeignKey(User)
-    group_id = models.ForeignKey(Group)
-
-
 class Article(models.Model):
     # article_id is auto serial key. 1,2,3,4,...
     user_id = models.ForeignKey(User)
@@ -104,4 +107,11 @@ class Article(models.Model):
     notice = models.BooleanField(default=False)
 
 
+class UserGroup(models.Model):
+    user_id = models.ForeignKey(User)
+    group_id = models.ForeignKey(Group)
 
+
+class GroupArticle(models.Model):
+    article_id = models.ForeignKey(Article)
+    group_id = models.ForeignKey(Group)
