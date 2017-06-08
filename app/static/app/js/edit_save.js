@@ -109,8 +109,8 @@ function make_friend_relationship(id) {
 
 }
 
-function join_group(group_id){
-  $.ajaxSetup({
+function join_group(group_id) {
+    $.ajaxSetup({
         headers: {"X-CSRFToken": get_cookie("csrftoken")}
     });
 
@@ -127,4 +127,23 @@ function join_group(group_id){
         }
     });
 
+}
+
+function friend_approve(friend_id) {
+    $.ajaxSetup({
+        headers: {"X-CSRFToken": get_cookie("csrftoken")}
+    });
+
+    alert("OK");
+    $.ajax({
+        url: '/app/my_page/friend/?action=approve&data=' + friend_id + '/',
+        type: 'POST',
+        success: function (result) {
+            alert("수락했습니다.");
+            location.href = '/app/my_page/friend/'
+        },
+        error: function (error) {
+            alert("실패했습니다.");
+        }
+    });
 }

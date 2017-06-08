@@ -41,8 +41,14 @@ def my_page(request, menu):
             elif action == "befriend":
                 friend_id= request.GET.get('data')[:-1]
                 friend = User.objects.filter(username=friend_id).first()
-                new_relationship = Friend.objects.create(sender_id=user, receiver_id=friend)
-                new_relationship.save()
+                is_friend = Friend.objects.filter(sender_id=request.user, receiver_id=friend).count()
+                if is_friend == 0:
+                    new_relationship = Friend.objects.create(sender_id=user, receiver_id=friend)
+                    new_relationship.save()
+            elif action == "approve":
+                friend_id = request.GET.get('data')[:-1]
+                friend = User.objects.filter(username=friend_id)
+                Friend.objects.filter(sender_id=friend, receiver_id=request.user).update(approve=True)
 
         together_friends = Friend.objects.filter(Q(sender_id=user) & Q(approve=True))
         together_friend_list = []
@@ -57,6 +63,8 @@ def my_page(request, menu):
         for friend in only_me_friends:
             temp_dict = dict()
             temp_dict['friend_id'] = friend.receiver_id
+            temp_dict['approve'] = friend.approve
+            temp_dict['date'] = friend.date
             only_me_friend_list.append(temp_dict)
         context['only_me_friend'] = only_me_friend_list
 
@@ -65,6 +73,8 @@ def my_page(request, menu):
         for friend in only_you_friends:
             temp_dict = dict()
             temp_dict['friend_id'] = friend.sender_id
+            temp_dict['approve'] = friend.approve
+            temp_dict['date'] = friend.date
             only_you_friend_list.append(temp_dict)
         context['only_you_friend'] = only_you_friend_list
         return render(request, 'app/my_page_friend.html', context)
