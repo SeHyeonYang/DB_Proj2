@@ -89,6 +89,8 @@ def lecture_category(request, category):
         course_list.append(temp_dict)
 
     context = {}
+    flag = Teacher.objects.filter(user_id=request.user).count()
+    context['is_teacher'] = flag
     context['category'] = category
     context['category_list'] = category_list
     context['course_list'] = course_list
