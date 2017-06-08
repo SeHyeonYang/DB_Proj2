@@ -8,6 +8,7 @@ from django.db.models import Q
 
 def group_home(request):
     _group_list = Group.objects.all()
+    print(_group_list.query)
     group_list = []
     article_list =[]
 
