@@ -6,6 +6,7 @@ from app.models import *
 import datetime
 import json
 from .authentify import *
+import datetime
 from django.contrib.auth.decorators import user_passes_test
 
 
@@ -17,18 +18,21 @@ def article(request, option):
 
             data = request.POST
             text = data['search']
-            option = data.get('option',None)
-            if option == 'title' :
+            option = data.get('option', None)
+            if option == 'title':
                 article_list = Article.objects.filter(title__contains=text)
 
-            elif option == 'user' :
+
+            elif option == 'user':
                 user_list = User.objects.filter(Q(username__contains=text))
-                article_list = Article.objects.filter(user_id__in = user_list)
+                article_list = Article.objects.filter(user_id__in=user_list)
+
 
             elif option == 'content':
                 article_list = Article.objects.filter(contents__contains=text)
 
-            else :
+
+            else:
                 article_list = Article.objects.all()
 
             for article in article_list:
@@ -42,7 +46,7 @@ def article(request, option):
 
             return render(request, 'app/total_article.html', context)
 
-        else :
+        else:
 
             article_list = Article.objects.all()
             for article in article_list:
@@ -51,6 +55,7 @@ def article(request, option):
                 temp_dict['article_user'] = article.user_id
                 temp_dict['article_title'] = article.title
                 temp_dict['article_date'] = article.date
+
             context = {}
             context['article_list'] = article_list
             return render(request, 'app/total_article.html', context)
@@ -60,10 +65,12 @@ def article(request, option):
         article_id = request.GET.get('article')[:-1]
 
         this_article = Article.objects.filter(id=article_id).first()
+
         if this_article.user_id == request.user:
             Article.objects.filter(id=article_id).delete()
             return HttpResponse("OK")
-        
+
+
     elif option == 'write':
 
         if request.method == "GET":
@@ -72,6 +79,7 @@ def article(request, option):
                 temp_dict = dict()
                 temp_dict['category_id'] = category.id
                 temp_dict['category_name'] = category.category_name
+
             context = {}
             context['category_list'] = category_list
             return render(request, 'app/write_article.html', context)
@@ -84,7 +92,9 @@ def article(request, option):
             c_date = datetime.datetime.now(),
             article = Article.objects.create(user_id=c_user_id, title=c_title, contents=c_content,
                                              date=c_date, notice=False)
+
             article.save()
+
             return render(request, 'app/write_article.html', {})
 
 
